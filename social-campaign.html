@@ -55,65 +55,84 @@
         <div class="wrap">
           <p class="kicker">the document</p>
           <h2>The process document</h2>
-          <p>Every blank in the format is filled in. The legal phase is marked
-            <code>never</code>, and the claims phase above it only became autonomous after
-            twenty clean runs.</p>
-          <pre class="code">PROCESS: social campaign              id: mkt/social-campaign   v5
-owner: Head of Social                 effective: 2026-08-19
+          <p>Every blank in the format is filled in. Version 6 rewrote the process around
+            the thirteen activities the manager actually does, and the amendment history says
+            so. Sign-offs are marked <code>never</code>: brand and legal stay with people no
+            matter how good the agents get.</p>
+          <pre class="code">PROCESS: social campaign              id: mkt/social-campaign   v6
+owner: Head of Social                 effective: 2026-08-20
 trigger: a campaign brief is approved in mkt/campaign-planning
 concurrency: runs may overlap - up to six live at once, one per campaign
-goal: a legally cleared campaign scheduled on every channel the brief
-      names, and a readout of how it did
+goal: a campaign launched on every channel the brief names, run for its
+      window, and reported against what the brief asked for
 phases:
-  direction - convenes bake-off              owner: Head of Social
-              after: trigger                 by: 2 days
-              automation: supervised
-  produce   - runs build-by-talent           owner: Creative Lead
-              after: direction               by: 5 days
-              automation: supervised
-  claims    - convenes assessment            owner: Brand agent
-              after: produce                 by: 1 day
-              automation: autonomous
-  legal     - convenes approval              owner: Legal reviewer
-              after: claims                  by: 1 day
-              <span class="k">automation: never</span>
-  schedule  - system: the scheduler          owner: Social agent
-              after: legal
-              automation: autonomous
-  readout   - runs collect-and-report        owner: Analytics agent
-              after: schedule + 14 days
-              automation: autonomous
+  take-in-brief    - human: read the brief, pull out what the campaign
+                     must accomplish
+                     owner: Manager           after: trigger
+  set-parameters   - human: pick platforms, audience and dates, and put
+                     a number on it. Leadership confirms the budget
+                     owner: Manager           after: take-in-brief
+  brief-creatives  - convenes briefing: the team hears what is needed
+                     and by when, together
+                     owner: Manager           after: set-parameters
+  settle-direction - convenes bake-off: two or three concepts, one
+                     chosen, with the reasons said out loud
+                     owner: Manager           after: brief-creatives
+  produce-posts    - runs build-by-talent: copy, images and video,
+                     each sized and worded for its platform
+                     owner: Manager           after: settle-direction
+  get-sign-offs    - convenes approval: brand and legal sign, as named
+                     signers, against a version of the posts
+                     owner: Legal reviewer    after: produce-posts
+                     <span class="k">automation: never</span>
+  practical-side   - human: tracking links, the landing page check, the
+                     ad campaigns, the posting schedule
+                     owner: Manager           after: set-parameters
+  launch           - human: the manager says go. The scheduler and the
+                     ad platforms take it from there
+                     owner: Manager
+                     after: get-sign-offs + practical-side
+  watch            - human: track results against the brief
+                     owner: Manager           after: launch
+  engage           - human: answer comments and messages
+                     owner: Community manager  after: launch
+  optimize         - human: move ad money, swap stale creative
+                     owner: Media buyer       after: launch
+  wrap-up          - runs collect-and-report: the numbers from every
+                     channel, reported against the brief
+                     owner: Manager
+                     after: watch + engage + optimize
+  record-learnings - convenes debrief: what to repeat, what to avoid
+                     owner: Manager           after: wrap-up
 run-scoped:
-  status    - runs collect-and-report        owner: Analytics agent
-              every: 7 days
-              from: produce   until: run close
-              automation: autonomous
-  spend     - runs allocate-and-reconcile    owner: Head of Social
-              from: trigger   until: run close
-              automation: assisted
-  community - human: field replies, escalate to the owner
-              on: a reply or complaint arrives
-              from: schedule  until: schedule + 14 days
-              automation: assisted
+  spend  - runs allocate-and-reconcile       owner: Manager
+           from: set-parameters   until: run close
+  status - runs collect-and-report           owner: Manager
+           every: 7 days
+           from: launch   until: run close
 policy:
   no claim ships without a citation in the claims register
-  legal approval is a human gate and is never delegated to an agent
-  an asset changed after approval goes back through legal. There is no
-    minor-change path
+  sign-off is a human gate and is never delegated to an agent
+  a post changed after sign-off goes back through sign-offs. There is
+    no minor-change path
 amendments:
-  v2 - claims moved out of legal into its own phase, so legal reviews
-       the exceptions rather than every asset (debrief, run 12)
-  v3 - claims raised from supervised to autonomous after twenty clean
-       runs (debrief, run 31)
-  v4 - readout moved from 7 days to 14. A week was too early to see
+  v2 - claims checking moved out of legal review, so legal reads the
+       exceptions rather than every asset (debrief, run 12)
+  v3 - claims checking raised from supervised to autonomous after
+       twenty clean runs (debrief, run 31)
+  v4 - the readout moved from 7 days to 14. A week was too early to see
        anything on the slower channels (debrief, run 38)
   v5 - the weekly status, the budget watch, and community response
-       written down as run-scoped. All three were already happening, and
-       none was recorded (debrief, run 47)</pre>
-          <p>Version 2 is what fixed the bottleneck. Legal used to read every asset, which put
-            one reviewer in front of a process that runs forty times a quarter. Moving the claims
-            check into its own phase did not change who approves anything. It changed how much
-            reaches the reviewer, who now reads only the assets that failed the check.</p>
+       written down as run-scoped (debrief, run 47)
+  v6 - rewritten around the thirteen activities the manager actually
+       does. Setting parameters, the practical side, the launch
+       decision, the live window and the learnings had been compressed
+       into six phases or left out entirely (activity walk, 2026-08-20)</pre>
+          <p>The phase graph has two branches and a window. After the parameters are set,
+            the creative chain and the practical side run at the same time, and launch waits
+            for both. After launch, watch, engage and optimize run at once for as long as the
+            campaign is live, and wrap-up waits for all three. Order comes from the
+            <code>after:</code> lines rather than from the numbering.</p>
         </div>
       </section>
 
@@ -121,21 +140,23 @@ amendments:
         <div class="wrap">
           <p class="kicker">the records</p>
           <h2>The records a run produces</h2>
-          <p>Each phase leaves whatever record its own kind of work produces. A phase that
-            convenes a collab pattern leaves that pattern's CONVENED and DONE records. A phase
-            that runs a work pattern leaves its plan and its JOB DONE. A system phase leaves one
-            line saying what happened and when. The run opens and closes around all of them:</p>
-          <pre class="code">RUN: mkt/social-campaign v4 &middot; run 47
-started: 2026-08-03 by Head of Social
+          <p>Each activity leaves whatever record its own kind of work produces. The
+            briefing, the bake-off, the approval and the debrief leave their CONVENED and
+            DONE records. Produce-posts and wrap-up leave a plan and a JOB DONE each, because
+            they run work patterns. A <code>human:</code> activity leaves one line saying
+            what happened and who did it. The run opens and closes around all of them:</p>
+          <pre class="code">RUN: mkt/social-campaign v6 &middot; run 52
+started: 2026-08-20 by Manager
 trigger: campaign brief CB-118, approved in mkt/campaign-planning run 9
 
-RUN DONE: mkt/social-campaign v4 &middot; run 47
+RUN DONE: mkt/social-campaign v6 &middot; run 52
 outcome: completed
-result: 14 assets live across 4 channels, scheduled 2026-08-11
-open: one asset held back - the claim about response times has no
-      citation, and the claims register entry is with Legal</pre>
-          <p>The records say v4 while the document above says v5. A run keeps the version it ran
-            under, and version 5 came out of run 47's own debrief.</p>
+result: the campaign ran its window on 4 channels; posts reached v3;
+        reported against the brief
+open: one flagged reply is waiting on an answer from support</pre>
+          <p>A run keeps the version it ran under. Run 47, two versions ago, carries v4 in
+            its records, and an auditor reads those records against v4 rather than against
+            this page.</p>
           <p>Between them, those records answer what an auditor asks for. The process document
             says what the process is, and the run records show that it ran. Because each record
             was written as the work happened and names who acted and when, nobody has to
@@ -147,8 +168,9 @@ open: one asset held back - the claim about response times has no
         <div class="wrap">
           <p class="kicker">the simulation</p>
           <h2>A simulation of one run</h2>
-          <p>The run whose records appear above is played from start to finish, failed legal
-            review included, on <a href="run-simulation.html">its own page</a>.</p>
+          <p>One run is played from start to finish on
+            <a href="run-simulation.html">its own page</a>, with the sign-off changes and a
+            mid-flight creative swap included.</p>
         </div>
       </section>
 

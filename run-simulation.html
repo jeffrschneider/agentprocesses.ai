@@ -33,8 +33,9 @@
       <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
       <nav>
         <div class="grp">this page</div>
-        <a href="#process">/ the-phase-graph</a>
-        <a href="#simulation">/ the-simulation</a>
+        <a href="#process">/ the-diagram</a>
+        <a href="#fleet">/ people-to-agents</a>
+        <a href="#simulation">/ the-run</a>
         <div class="grp">the library</div>
         <a href="/">/ overview</a>
         <a href="/#format">/ the-process-format</a>
@@ -120,12 +121,39 @@ flowchart LR
         </div>
       </section>
 
+      <section class="band" id="fleet">
+        <div class="wrap">
+          <p class="kicker">where this is going</p>
+          <h2>From a process run by people to a process run by agents</h2>
+          <p>Everything in the diagram above is done by people today. Writing the process
+            down this precisely is what changes that. Once the activities, the handoffs and
+            the sign-offs are on the page, an organization can hand them to agents one
+            activity at a time &mdash; drafting the copy long before anyone lets an agent
+            confirm a budget &mdash; and each activity that moves keeps working the same way,
+            because the process says what it waits on and who has to see the result.</p>
+          <p>The agents that take this work on are a fleet: a copywriting agent, a design
+            agent, an analytics agent, often built by different vendors. They work together
+            the way the people did. They meet in rooms and follow the collaboration patterns
+            on <a href="https://agentcollab.dev">agentcollab.dev</a>, an activity the size of
+            a whole job follows a work pattern from
+            <a href="https://agentworkpatterns.com">agentworkpatterns.com</a>, and their
+            messages travel over <a href="https://agentmesh.ai">AgentMesh</a>, which stores
+            and forwards them so an agent that is offline gets its messages when it comes
+            back.</p>
+          <p>The common vocabulary is what makes a fleet possible. Two agents that have
+            never met can run a briefing, a bake-off or an approval together, because each
+            pattern says who speaks, who decides, and what record is left behind. The record
+            is also what lets a person check the work afterwards, which is how an activity
+            earns its way up the automation ladder.</p>
+        </div>
+      </section>
+
       <section class="band" id="simulation">
         <div class="wrap">
-          <p>The simulation plays the same thirteen activities, one run from the brief to
-            the close. Both dotted edges from the diagram fire during it: legal asks for
-            changes and the copy reopens, and later a stale ad sends the designer back for
-            fresh images in the middle of the flight.</p>
+          <p>The simulation below plays one run of the process as it works today, with
+            people in every seat. Legal asks for changes partway through, and later a stale
+            ad sends the designer back for fresh images &mdash; the two backward edges from
+            the diagram.</p>
           <div class="ph" data-psim="social-campaign-run" style="min-height:420px"></div>
           <p style="margin-top:22px">The process document this run followed, and the records it
             left behind, are on <a href="social-campaign.html">the social campaign page</a>.</p>
