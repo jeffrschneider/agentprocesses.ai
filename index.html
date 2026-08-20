@@ -139,6 +139,7 @@
       .rail{ position:static; height:auto; border-right:0; border-bottom:1px solid var(--line); }
     }
   </style>
+  <link rel="stylesheet" href="sims/ps.css">
 </head>
 <body>
   <div class="layout">
@@ -156,6 +157,7 @@
         <a href="#catalog">/ the-catalog</a>
         <div class="grp">worked example</div>
         <a href="#example">/ one-process</a>
+        <a href="#run">/ one-run-played</a>
         <a href="#department">/ one-department</a>
         <div class="grp">reference</div>
         <a href="https://github.com/jeffrschneider/agentprocesses">/ the-repo &#8599;</a>
@@ -520,6 +522,26 @@ open: one asset held back - the claim about response times has no
         </div>
       </section>
 
+      <section class="band" id="run">
+        <div class="wrap">
+          <p class="kicker">the run, animated</p>
+          <h2>Run 47, played from trigger to close</h2>
+          <p>This is the run whose records appear above, played as it happened. The left
+            column is the process document doing its job: phases light up when their
+            <code>after:</code> lines are satisfied, every record lands under the phase that
+            produced it, and the run-scoped lane fires on its own clock while the pointer is
+            elsewhere. The right side shows the inside of whichever phase is active &mdash;
+            the bake-off, the build, the assessments, the approval &mdash; drawn in the same
+            language as the simulations on <a href="https://agentcollab.dev">agentcollab.dev</a>
+            and <a href="https://agentworkpatterns.com">agentworkpatterns.com</a>, because
+            those are literally the patterns the phases convene.</p>
+          <p>Watch what happens when legal refuses: the pointer climbs back up the column to
+            <code>produce</code>, exactly as the process's failure edge says, and both rounds
+            stay in the record.</p>
+          <div class="ph" data-psim="social-campaign-run" style="min-height:420px"></div>
+        </div>
+      </section>
+
       <section class="band" id="department">
         <div class="wrap">
           <p class="kicker">a worked catalog</p>
@@ -628,5 +650,8 @@ open: one asset held back - the claim about response times has no
   links.forEach((a) => a.addEventListener("click", () => setOn(a.getAttribute("href").slice(1))));
 })();
 </script>
+<script src="sims/ps-sim.js"></script>
+<script src="sims/scores/social-campaign-run.js"></script>
+<script>PSim.mountAll();</script>
 </body>
 </html>

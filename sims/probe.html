@@ -1,0 +1,18 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>psim probe</title>
+<link rel="stylesheet" href="ps.css">
+<style>
+  body{ margin:0; background:#0A1417; padding:18px; }
+  .frame{ max-width:1000px; margin:0 auto; }
+</style>
+<div class="frame"><div id="host" data-psim="social-campaign-run"></div></div>
+<script src="ps-sim.js"></script>
+<script src="scores/social-campaign-run.js"></script>
+<script>
+  var q = new URLSearchParams(location.search);
+  var sim = PSim.mount(document.getElementById('host'), 'social-campaign-run');
+  var step = parseInt(q.get('step') || '0', 10);
+  sim.pause();
+  sim.go(step, true);
+</script>
