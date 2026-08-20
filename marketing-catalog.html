@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A marketing department's catalog · Agent Processes</title>
+  <meta name="description" content="Eleven processes after a first pass: the rows, who owns them, and what the catalog shows about where to start.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="rail">
+      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+      <nav>
+        <div class="grp">this example</div>
+        <a href="#rows">/ the-rows</a>
+        <a href="#findings">/ the-findings</a>
+        <div class="grp">the library</div>
+        <a href="/">/ overview</a>
+        <a href="/#format">/ the-process-format</a>
+        <a href="/#catalog">/ the-catalog-format</a>
+        <div class="grp">worked examples</div>
+        <a href="social-campaign.html">/ social-campaign</a>
+        <a class="on" href="marketing-catalog.html">/ marketing-catalog</a>
+        <div class="grp">reference</div>
+        <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/marketing-catalog.md">/ this-example-in-the-repo &#8599;</a>
+      </nav>
+      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
+    </aside>
+
+    <main class="main" id="top">
+
+      <div class="wrap hero">
+        <span class="eyebrow"><span class="tag">agent processes</span> &middot; a worked example</span>
+        <h1>A marketing <span class="am">department's</span> catalog</h1>
+        <p class="lede">The whole department in one table: eleven processes, who owns each one,
+          what starts it, and how automated it is. This is what a first pass produces, and one
+          of the rows &mdash; the social campaign &mdash; is written out in full on
+          <a href="social-campaign.html">its own page</a>.</p>
+        <div class="cta">
+          <a class="btn btn-lead" href="#rows">the catalog</a>
+          <a class="btn btn-ghost" href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/marketing-catalog.md">this example in the repo &#8599;</a>
+        </div>
+      </div>
+
+      <section class="band" id="rows">
+        <div class="wrap">
+          <p class="kicker">the catalog</p>
+          <h2>The eleven rows</h2>
+          <p>This is what the department has after a first pass, which is enough to see what
+            exists, who owns it, and where the work piles up.</p>
+          <div class="scroll">
+            <table class="tbl">
+              <thead><tr><th>id</th><th>owner</th><th>trigger</th><th>runs</th><th>automation</th><th>status</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">mkt/campaign-planning</td><td>VP Marketing</td><td>the quarter opens</td><td>4 a year</td><td class="mono">assisted</td><td>running</td></tr>
+                <tr><td class="mono">mkt/competitor-review</td><td>Product Marketing</td><td>monthly, or a competitor announcement</td><td>~16 a year</td><td class="mono">supervised</td><td>running</td></tr>
+                <tr><td class="mono">mkt/social-campaign</td><td>Head of Social</td><td>a campaign brief is approved</td><td>~40 a quarter</td><td class="mono">never</td><td>running</td></tr>
+                <tr><td class="mono">mkt/email-campaign</td><td>Lifecycle Marketing</td><td>a campaign brief is approved</td><td>~20 a quarter</td><td class="mono">never</td><td>running</td></tr>
+                <tr><td class="mono">mkt/website-update</td><td>Web Lead</td><td>a change request is filed</td><td>~30 a quarter</td><td class="mono">supervised</td><td>running</td></tr>
+                <tr><td class="mono">mkt/lead-routing</td><td>Demand Gen</td><td>a form is submitted</td><td>~400 a week</td><td class="mono">autonomous</td><td>running</td></tr>
+                <tr><td class="mono">mkt/claims-register</td><td>Product Marketing</td><td>a new claim is proposed</td><td>~10 a quarter</td><td class="mono">never</td><td>running</td></tr>
+                <tr><td class="mono">mkt/brand-review</td><td>Brand Lead</td><td>twice a year, or on request</td><td>2 a year</td><td class="mono">assisted</td><td>running</td></tr>
+                <tr><td class="mono">mkt/event</td><td>Events Lead</td><td>an event is committed to</td><td>~6 a year</td><td class="mono">manual</td><td>documented</td></tr>
+                <tr><td class="mono">mkt/agency-brief</td><td>Head of Social</td><td>work is sent to an agency</td><td>~8 a quarter</td><td class="mono">manual</td><td>documented</td></tr>
+                <tr><td class="mono">mkt/quarterly-readout</td><td>VP Marketing</td><td>the quarter closes</td><td>4 a year</td><td class="mono">supervised</td><td>running</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Two rows say <code>documented</code> rather than <code>running</code>, which means
+            the process is written down but nobody has run it against the document yet. A catalog
+            that says a process is running before it has run is one people stop believing, so the
+            state is recorded as it stands.</p>
+        </div>
+      </section>
+
+      <section class="band" id="findings">
+        <div class="wrap">
+          <p class="kicker">the findings</p>
+          <h2>What the catalog shows</h2>
+          <p><b>Two processes have a lot of other work depending on them, and neither one runs
+            very often.</b> The competitor review feeds six others and runs sixteen times a year.
+            The claims register feeds three of the four processes that write anything a customer
+            will read, and runs ten times a quarter. If you ranked this catalog by how often each
+            process runs, both would come near the bottom, and both are still worth automating
+            early.</p>
+          <p><b>The high-volume work is somewhere else.</b> Inbound lead routing runs four hundred
+            times a week, more than everything else in the catalog put together, and it is
+            already autonomous. That is what usually happens to the busiest process in a
+            department, whether or not anyone planned it.</p>
+          <p><b>Two processes wait on the same person.</b> Social and email campaigns both report
+            <code>never</code>, and in both cases it is the same legal approval done by the same
+            reviewer, which puts one person in the path of sixty runs a quarter. The catalog
+            cannot automate that away. What it does tell you is that the thing to fix here is how
+            that review is staffed, rather than the automation level.</p>
+          <p>The dependency view, where this department would start, and what its first pass got
+            wrong are in
+            <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/marketing-catalog.md">the worked example in the repo</a>.</p>
+        </div>
+      </section>
+
+      <footer>
+        <div class="wrap">
+          <span>Agent Processes &middot; your work, written down</span>
+          <a href="https://github.com/jeffrschneider/agentprocesses">GitHub &#8599;</a>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+<script>
+// The rail marker follows the section in view.
+(() => {
+  const links = [...document.querySelectorAll('.rail nav a[href^="#"]')];
+  const byId = Object.fromEntries(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const targets = Object.keys(byId).map((id) => document.getElementById(id)).filter(Boolean);
+  function setOn(id) {
+    links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + id));
+  }
+  const io = new IntersectionObserver((entries) => {
+    const visible = entries.filter((e) => e.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (visible.length) setOn(visible[0].target.id);
+  }, { rootMargin: "-20% 0px -60% 0px" });
+  targets.forEach((t) => io.observe(t));
+  links.forEach((a) => a.addEventListener("click", () => setOn(a.getAttribute("href").slice(1))));
+})();
+</script>
+</body>
+</html>

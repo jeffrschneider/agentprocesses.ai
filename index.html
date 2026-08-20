@@ -9,137 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    /* ══════════ THE WIRE : design token system (processes: blue lead) ══════════ */
-    :root{
-      --ink:#0A1417; --panel:#0F1D22; --line:#1C2E33;
-      --paper:#E7EFEC; --dim:#7C918C; --faint:#4A5D5A;
-      --signal:#F2A93B; --verify:#43D6A6; --address:#6BA8FF; --broadcast:#B69CFF;
-      --lead:var(--address);
-      --disp:'Space Grotesk', sans-serif;
-      --body:'IBM Plex Sans', system-ui, sans-serif;
-      --wire:'IBM Plex Mono', ui-monospace, monospace;
-    }
-    *{ box-sizing:border-box; }
-    html,body{ margin:0; }
-    html{ scroll-behavior:smooth; }
-    body{ background:var(--ink); color:var(--paper); font-family:var(--body);
-      font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
-      background-image:
-        linear-gradient(var(--line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--line) 1px, transparent 1px);
-      background-size:64px 64px, 64px 64px;
-      background-position:-1px -1px;
-    }
-    body::before{
-      content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-      background:
-        radial-gradient(80% 45% at 30% 0%, rgba(107,168,255,.10), transparent 60%),
-        radial-gradient(70% 50% at 100% 10%, rgba(67,214,166,.07), transparent 55%),
-        linear-gradient(180deg, rgba(10,20,23,.72), var(--ink) 62%);
-    }
-    a{ color:inherit; }
-
-    .layout{ position:relative; z-index:1; display:grid; grid-template-columns:248px 1fr; min-height:100vh; }
-    .rail{ border-right:1px solid var(--line); padding:26px 22px; position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; scrollbar-width:thin; }
-    .brand{ font-family:var(--wire); font-weight:600; font-size:.82rem; letter-spacing:.02em;
-      display:flex; align-items:center; gap:9px; color:var(--paper); text-decoration:none; margin-bottom:30px; }
-    .brand .dot{ width:9px; height:9px; border-radius:2px; background:var(--lead);
-      box-shadow:0 0 0 3px rgba(107,168,255,.15), 8px 0 0 -2px var(--verify), 16px 0 0 -2px var(--signal); }
-    .rail .grp{ font-family:var(--wire); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase;
-      color:var(--faint); margin:16px 0 4px; }
-    .rail .grp:first-child{ margin-top:0; }
-    .rail nav a{ display:block; font-family:var(--wire); font-size:.8rem; color:var(--dim);
-      text-decoration:none; padding:6px 0; border-left:2px solid transparent; padding-left:12px; margin-left:-12px; }
-    .rail nav a:hover{ color:var(--paper); }
-    .rail nav a.on{ color:var(--paper); border-left-color:var(--lead); }
-    .rail .foot{ margin-top:26px; padding-top:18px; border-top:1px solid var(--line);
-      font-family:var(--wire); font-size:.72rem; color:var(--faint); }
-
-    .main{ min-width:0; }
-    .wrap{ max-width:980px; margin:0 auto; padding:0 40px; }
-
-    .eyebrow{ font-family:var(--wire); font-size:.76rem; letter-spacing:.04em; color:var(--dim); }
-    .eyebrow .tag{ color:var(--lead); }
-    h1,h2,h3{ font-family:var(--disp); font-weight:700; letter-spacing:-.02em; line-height:1.08; }
-    .lede{ color:var(--dim); font-size:1.12rem; max-width:60ch; }
-
-    .hero{ padding:74px 0 42px; border-bottom:1px solid var(--line); }
-    .hero .eyebrow{ margin-bottom:22px; display:block; }
-    .hero h1{ font-size:clamp(2.2rem,4.6vw,3.2rem); margin:0 0 18px; }
-    .hero h1 .am{ color:var(--lead); }
-
-    section.band{ padding:56px 0; border-bottom:1px solid var(--line); }
-    section.band h2{ font-size:1.8rem; margin:0 0 14px; }
-    section.band h3{ font-size:1.15rem; margin:38px 0 10px; }
-    section.band p{ color:var(--dim); max-width:66ch; }
-    section.band p b, section.band li b{ color:var(--paper); font-weight:600; }
-    .kicker{ font-family:var(--wire); font-size:.74rem; letter-spacing:.12em; text-transform:uppercase;
-      color:var(--faint); margin:0 0 16px; }
-
-    ul.plain{ margin:18px 0 0; padding-left:20px; color:var(--dim); max-width:70ch; }
-    ul.plain li{ margin:10px 0; }
-    ul.plain b{ color:var(--paper); font-weight:600; }
-
-    .callout{ border:1px solid var(--line); border-left:3px solid var(--lead); border-radius:10px;
-      background:var(--panel); padding:14px 18px; margin:22px 0; max-width:70ch; }
-    .callout.violet{ border-left-color:var(--broadcast); }
-    .callout .t{ font-family:var(--wire); font-size:.74rem; letter-spacing:.1em; text-transform:uppercase;
-      color:var(--faint); margin-bottom:6px; }
-    .callout p{ margin:6px 0 0; color:var(--dim); }
-    .callout p:first-of-type{ margin-top:0; }
-    .callout p b{ color:var(--paper); }
-
-    pre.code{ background:#0b1220; border:1px solid var(--line); border-radius:12px; padding:16px 18px;
-      overflow-x:auto; font-family:var(--wire); font-size:.82rem; line-height:1.7; color:var(--paper); margin:20px 0; }
-    pre.code .c{ color:var(--faint); }
-    pre.code .k{ color:var(--lead); }
-
-    /* process maps */
-    .pmap{ display:block; width:100%; height:auto; margin:22px 0 6px; color:var(--faint); }
-    .pn rect{ fill:rgba(255,255,255,.025); stroke:var(--c); stroke-width:1.2; }
-    .pn-n{ font-family:var(--wire); font-size:11px; fill:var(--paper); }
-    .pn-s{ font-family:var(--wire); font-size:8.4px; fill:var(--c); }
-    .pn-a{ font-family:var(--wire); font-size:8.4px; fill:var(--faint); text-anchor:end; }
-    .pe{ fill:none; stroke:var(--line); stroke-width:1.4; }
-    .pe.dash{ stroke-dasharray:4 4; }
-    .pe-l{ font-family:var(--wire); font-size:8.4px; fill:var(--faint); text-anchor:middle; }
-    .cn rect{ fill:rgba(255,255,255,.025); stroke:var(--c); stroke-width:1.2; }
-    .cn-n{ font-family:var(--wire); font-size:10.5px; fill:var(--paper); }
-    .cn-f{ font-family:var(--wire); font-size:10px; fill:var(--signal); text-anchor:end; }
-    .legend{ display:flex; gap:18px; flex-wrap:wrap; font-family:var(--wire); font-size:.72rem;
-      color:var(--faint); margin:2px 0 0; }
-    .legend i{ width:9px; height:9px; border-radius:2px; display:inline-block; margin-right:7px; vertical-align:0; }
-
-    .scroll{ overflow-x:auto; }
-    table.tbl{ width:100%; border-collapse:collapse; margin:20px 0; font-size:.86rem; }
-    table.tbl th{ text-align:left; font-family:var(--wire); font-size:.68rem; letter-spacing:.1em;
-      text-transform:uppercase; color:var(--faint); border-bottom:1px solid var(--line);
-      padding:8px 14px 8px 0; font-weight:500; white-space:nowrap; }
-    table.tbl td{ border-bottom:1px solid var(--line); padding:10px 14px 10px 0; color:var(--dim); vertical-align:top; }
-    table.tbl td b{ color:var(--paper); font-weight:600; }
-    table.tbl td.mono, table.tbl td code{ font-family:var(--wire); font-size:.82rem; color:var(--paper); }
-
-    .cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:26px; }
-    .btn{ font-family:var(--wire); font-size:.86rem; font-weight:500; text-decoration:none;
-      padding:12px 20px; border-radius:8px; border:1px solid transparent; display:inline-flex; align-items:center; gap:8px;
-      transition:transform .16s ease, box-shadow .2s ease, border-color .2s ease; }
-    .btn-lead{ background:var(--lead); color:#08172b; font-weight:600;
-      box-shadow:0 12px 30px -14px rgba(107,168,255,.8); }
-    .btn-lead:hover{ transform:translateY(-2px); }
-    .btn-ghost{ border-color:var(--line); color:var(--paper); background:rgba(255,255,255,.02); }
-    .btn-ghost:hover{ border-color:var(--dim); transform:translateY(-2px); }
-
-    footer{ padding:34px 0 60px; }
-    footer .wrap{ font-family:var(--wire); font-size:.78rem; color:var(--faint); display:flex; gap:14px; flex-wrap:wrap; }
-    footer a{ color:var(--dim); text-decoration:none; }
-
-    @media (max-width:900px){
-      .layout{ grid-template-columns:1fr; }
-      .rail{ position:static; height:auto; border-right:0; border-bottom:1px solid var(--line); }
-    }
-  </style>
-  <link rel="stylesheet" href="sims/ps.css">
+  <link rel="stylesheet" href="site.css">
 </head>
 <body>
   <div class="layout">
@@ -155,10 +25,9 @@
         <div class="grp">the formats</div>
         <a href="#format">/ the-process</a>
         <a href="#catalog">/ the-catalog</a>
-        <div class="grp">worked example</div>
-        <a href="#example">/ one-process</a>
-        <a href="#run">/ one-run-played</a>
-        <a href="#department">/ one-department</a>
+        <div class="grp">worked examples</div>
+        <a href="social-campaign.html">/ social-campaign</a>
+        <a href="marketing-catalog.html">/ marketing-catalog</a>
         <div class="grp">reference</div>
         <a href="https://github.com/jeffrschneider/agentprocesses">/ the-repo &#8599;</a>
       </nav>
@@ -435,191 +304,21 @@ amendments:
         </div>
       </section>
 
-      <section class="band" id="example">
+      <section class="band" id="examples">
         <div class="wrap">
-          <p class="kicker">a worked process</p>
-          <h2>The social campaign process</h2>
-          <p>This is one process from the marketing catalog below, with every blank filled in.
-            The legal phase is marked <code>never</code>, and the claims phase above it only
-            became autonomous after twenty clean runs.</p>
-          <pre class="code">PROCESS: social campaign              id: mkt/social-campaign   v5
-owner: Head of Social                 effective: 2026-08-19
-trigger: a campaign brief is approved in mkt/campaign-planning
-concurrency: runs may overlap - up to six live at once, one per campaign
-goal: a legally cleared campaign scheduled on every channel the brief
-      names, and a readout of how it did
-phases:
-  direction - convenes bake-off              owner: Head of Social
-              after: trigger                 by: 2 days
-              automation: supervised
-  produce   - runs build-by-talent           owner: Creative Lead
-              after: direction               by: 5 days
-              automation: supervised
-  claims    - convenes assessment            owner: Brand agent
-              after: produce                 by: 1 day
-              automation: autonomous
-  legal     - convenes approval              owner: Legal reviewer
-              after: claims                  by: 1 day
-              <span class="k">automation: never</span>
-  schedule  - system: the scheduler          owner: Social agent
-              after: legal
-              automation: autonomous
-  readout   - runs collect-and-report        owner: Analytics agent
-              after: schedule + 14 days
-              automation: autonomous
-run-scoped:
-  status    - runs collect-and-report        owner: Analytics agent
-              every: 7 days
-              from: produce   until: run close
-              automation: autonomous
-  spend     - runs allocate-and-reconcile    owner: Head of Social
-              from: trigger   until: run close
-              automation: assisted
-  community - human: field replies, escalate to the owner
-              on: a reply or complaint arrives
-              from: schedule  until: schedule + 14 days
-              automation: assisted
-policy:
-  no claim ships without a citation in the claims register
-  legal approval is a human gate and is never delegated to an agent
-  an asset changed after approval goes back through legal. There is no
-    minor-change path
-amendments:
-  v2 - claims moved out of legal into its own phase, so legal reviews
-       the exceptions rather than every asset (debrief, run 12)
-  v3 - claims raised from supervised to autonomous after twenty clean
-       runs (debrief, run 31)
-  v4 - readout moved from 7 days to 14. A week was too early to see
-       anything on the slower channels (debrief, run 38)
-  v5 - the weekly status, the budget watch, and community response
-       written down as run-scoped. All three were already happening, and
-       none was recorded (debrief, run 47)</pre>
-          <p>Version 2 is what fixed the bottleneck. Legal used to read every asset, which put
-            one reviewer in front of a process that runs forty times a quarter. Moving the claims
-            check into its own phase did not change who approves anything. It changed how much
-            reaches the reviewer, who now reads only the assets that failed the check.</p>
-
-          <h3>The records a run produces</h3>
-          <p>Each phase leaves whatever record its own kind of work produces. A phase that
-            convenes a collab pattern leaves that pattern's CONVENED and DONE records. A phase
-            that runs a work pattern leaves its plan and its JOB DONE. A system phase leaves one
-            line saying what happened and when. The run opens and closes around all of them:</p>
-          <pre class="code">RUN: mkt/social-campaign v4 &middot; run 47
-started: 2026-08-03 by Head of Social
-trigger: campaign brief CB-118, approved in mkt/campaign-planning run 9
-
-RUN DONE: mkt/social-campaign v4 &middot; run 47
-outcome: completed
-result: 14 assets live across 4 channels, scheduled 2026-08-11
-open: one asset held back - the claim about response times has no
-      citation, and the claims register entry is with Legal</pre>
-          <p>The records say v4 while the document above says v5. A run keeps the version it ran
-            under, and version 5 came out of run 47's own debrief.</p>
-          <p>Between them, those records answer what an auditor asks for. The process document
-            says what the process is, and the run records show that it ran. Because each record
-            was written as the work happened and names who acted and when, nobody has to
-            reconstruct any of it afterwards.</p>
-        </div>
-      </section>
-
-      <section class="band" id="run">
-        <div class="wrap">
-          <p class="kicker">the run, animated</p>
-          <h2>Run 47, played from trigger to close</h2>
-          <p>This is the run whose records appear above, played as it happened. The left
-            column is the process document doing its job: phases light up when their
-            <code>after:</code> lines are satisfied, every record lands under the phase that
-            produced it, and the run-scoped lane fires on its own clock while the pointer is
-            elsewhere. The right side shows the inside of whichever phase is active &mdash;
-            the bake-off, the build, the assessments, the approval &mdash; drawn in the same
-            language as the simulations on <a href="https://agentcollab.dev">agentcollab.dev</a>
-            and <a href="https://agentworkpatterns.com">agentworkpatterns.com</a>, because
-            those are literally the patterns the phases convene.</p>
-          <p>Watch what happens when legal refuses: the pointer climbs back up the column to
-            <code>produce</code>, exactly as the process's failure edge says, and both rounds
-            stay in the record.</p>
-          <div class="ph" data-psim="social-campaign-run" style="min-height:420px"></div>
-        </div>
-      </section>
-
-      <section class="band" id="department">
-        <div class="wrap">
-          <p class="kicker">a worked catalog</p>
-          <h2>A marketing department's catalog</h2>
-          <p>This is the whole department: eleven processes, one row each. It is what you have
-            after a first pass, which is enough to see what exists, who owns it, and where the
-            work piles up.</p>
-          <div class="scroll">
-            <table class="tbl">
-              <thead><tr><th>id</th><th>owner</th><th>trigger</th><th>runs</th><th>automation</th><th>status</th></tr></thead>
-              <tbody>
-                <tr><td class="mono">mkt/campaign-planning</td><td>VP Marketing</td><td>the quarter opens</td><td>4 a year</td><td class="mono">assisted</td><td>running</td></tr>
-                <tr><td class="mono">mkt/competitor-review</td><td>Product Marketing</td><td>monthly, or a competitor announcement</td><td>~16 a year</td><td class="mono">supervised</td><td>running</td></tr>
-                <tr><td class="mono">mkt/social-campaign</td><td>Head of Social</td><td>a campaign brief is approved</td><td>~40 a quarter</td><td class="mono">never</td><td>running</td></tr>
-                <tr><td class="mono">mkt/email-campaign</td><td>Lifecycle Marketing</td><td>a campaign brief is approved</td><td>~20 a quarter</td><td class="mono">never</td><td>running</td></tr>
-                <tr><td class="mono">mkt/website-update</td><td>Web Lead</td><td>a change request is filed</td><td>~30 a quarter</td><td class="mono">supervised</td><td>running</td></tr>
-                <tr><td class="mono">mkt/lead-routing</td><td>Demand Gen</td><td>a form is submitted</td><td>~400 a week</td><td class="mono">autonomous</td><td>running</td></tr>
-                <tr><td class="mono">mkt/claims-register</td><td>Product Marketing</td><td>a new claim is proposed</td><td>~10 a quarter</td><td class="mono">never</td><td>running</td></tr>
-                <tr><td class="mono">mkt/brand-review</td><td>Brand Lead</td><td>twice a year, or on request</td><td>2 a year</td><td class="mono">assisted</td><td>running</td></tr>
-                <tr><td class="mono">mkt/event</td><td>Events Lead</td><td>an event is committed to</td><td>~6 a year</td><td class="mono">manual</td><td>documented</td></tr>
-                <tr><td class="mono">mkt/agency-brief</td><td>Head of Social</td><td>work is sent to an agency</td><td>~8 a quarter</td><td class="mono">manual</td><td>documented</td></tr>
-                <tr><td class="mono">mkt/quarterly-readout</td><td>VP Marketing</td><td>the quarter closes</td><td>4 a year</td><td class="mono">supervised</td><td>running</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p>Two rows say <code>documented</code> rather than <code>running</code>, which means
-            the process is written down but nobody has run it against the document yet. A catalog that says a
-            process is running before it has run is one people stop believing, so the state is
-            recorded as it stands.</p>
-
-          <h3>The same catalog as a graph</h3>
-          <p>Drawing the <code>feeds</code> and <code>fed by</code> columns shows which
-            processes hold up which. The number on a box is how many others wait on that one,
-            and eight of the eleven are drawn here.</p>
-
-          <svg class="pmap" viewBox="0 0 680 300" role="img" aria-label="the marketing catalog dependency graph: the competitor review and the claims register feed most of it">
-      <defs><marker id="pah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
-      <path class="pe" d="M164 47 C203 47 211 47 250 47" marker-end="url(#pah2)"/>
-      <path class="pe" d="M164 47 C203 47 211 117 250 117" marker-end="url(#pah2)"/>
-      <path class="pe" d="M164 47 C203 47 211 187 250 187" marker-end="url(#pah2)"/>
-      <path class="pe" d="M164 47 C203 47 211 257 250 257" marker-end="url(#pah2)"/>
-      <path class="pe" d="M164 47 C315 47 349 147 500 147" marker-end="url(#pah2)"/>
-      <path class="pe" d="M164 135 C203 135 211 117 250 117" marker-end="url(#pah2)"/>
-      <path class="pe" d="M164 135 C203 135 211 187 250 187" marker-end="url(#pah2)"/>
-      <path class="pe" d="M164 135 C203 135 211 257 250 257" marker-end="url(#pah2)"/>
-      <path class="pe" d="M400 47 C428 47 222 117 250 117" marker-end="url(#pah2)"/>
-      <path class="pe" d="M400 47 C428 47 222 187 250 187" marker-end="url(#pah2)"/>
-      <path class="pe" d="M164 223 C315 223 349 147 500 147" marker-end="url(#pah2)"/>
-      <path class="pe" d="M400 117 C445 117 455 147 500 147" marker-end="url(#pah2)"/>
-      <path class="pe" d="M400 187 C445 187 455 147 500 147" marker-end="url(#pah2)"/>
-      <g class="cn" style="--c:var(--signal)"><rect x="14" y="30" width="150" height="34" rx="7"/><text class="cn-n" x="25" y="51">competitor-review</text><text class="cn-f" x="153" y="51">6</text></g>
-      <g class="cn" style="--c:var(--signal)"><rect x="14" y="118" width="150" height="34" rx="7"/><text class="cn-n" x="25" y="139">claims-register</text><text class="cn-f" x="153" y="139">3</text></g>
-      <g class="cn" style="--c:var(--dim)"><rect x="14" y="206" width="150" height="34" rx="7"/><text class="cn-n" x="25" y="227">lead-routing</text><text class="cn-f" x="153" y="227">1</text></g>
-      <g class="cn" style="--c:var(--signal)"><rect x="250" y="30" width="150" height="34" rx="7"/><text class="cn-n" x="261" y="51">campaign-planning</text><text class="cn-f" x="389" y="51">3</text></g>
-      <g class="cn" style="--c:var(--dim)"><rect x="250" y="100" width="150" height="34" rx="7"/><text class="cn-n" x="261" y="121">social-campaign</text><text class="cn-f" x="389" y="121">1</text></g>
-      <g class="cn" style="--c:var(--dim)"><rect x="250" y="170" width="150" height="34" rx="7"/><text class="cn-n" x="261" y="191">email-campaign</text><text class="cn-f" x="389" y="191">1</text></g>
-      <g class="cn" style="--c:var(--dim)"><rect x="250" y="240" width="150" height="34" rx="7"/><text class="cn-n" x="261" y="261">website-update</text></g>
-      <g class="cn" style="--c:var(--dim)"><rect x="500" y="130" width="150" height="34" rx="7"/><text class="cn-n" x="511" y="151">quarterly-readout</text></g>
-    </svg>
-
-          <p><b>Two processes have a lot of other work depending on them, and neither one runs
-            very often.</b> The competitor review feeds six others and runs sixteen times a year.
-            The claims register feeds three of the four processes that write anything a customer
-            will read, and runs ten times a quarter. If you ranked this catalog by how often each
-            process runs, both would come near the bottom, and both are still worth automating
-            early.</p>
-          <p><b>The high-volume work is somewhere else.</b> Inbound lead routing runs four hundred
-            times a week, more than everything else in the catalog put together, and it is
-            already autonomous. That is what usually happens to the busiest process in a
-            department, whether or not anyone planned it.</p>
-          <p><b>Two processes wait on the same person.</b> Social and email campaigns both report
-            <code>never</code>, and in both cases it is the same legal approval done by the same
-            reviewer, which puts one person in the path of sixty runs a quarter. The catalog
-            cannot automate that away. What it does tell you is that the thing to fix here is how
-            that review is staffed, rather than the automation level.</p>
-          <p>The full catalog, the eleven rows, and what the department's first pass got wrong
-            are in
-            <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/marketing-catalog.md">the worked example</a>.</p>
+          <p class="kicker">worked examples</p>
+          <h2>Both formats, filled in with real work</h2>
+          <p>A format earns its keep when somebody fills it in, so each format has a worked
+            example on its own page.</p>
+          <ul class="plain">
+            <li><b><a href="social-campaign.html">The social campaign process</a></b> &mdash;
+              one process written out in full: the document at version 5, the records run 47
+              left behind, and a simulation that plays that run from the trigger to the close,
+              failure edge included.</li>
+            <li><b><a href="marketing-catalog.html">A marketing department's catalog</a></b>
+              &mdash; eleven processes after a first pass: the rows, who owns them, and what
+              the catalog shows about where to start.</li>
+          </ul>
         </div>
       </section>
 
@@ -650,8 +349,5 @@ open: one asset held back - the claim about response times has no
   links.forEach((a) => a.addEventListener("click", () => setOn(a.getAttribute("href").slice(1))));
 })();
 </script>
-<script src="sims/ps-sim.js"></script>
-<script src="sims/scores/social-campaign-run.js"></script>
-<script>PSim.mountAll();</script>
 </body>
 </html>

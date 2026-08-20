@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The social campaign process · Agent Processes</title>
+  <meta name="description" content="One process written out in full: the document at version 5, the records run 47 left behind, and a simulation that plays that run from the trigger to the close.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="sims/ps.css">
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="rail">
+      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+      <nav>
+        <div class="grp">this example</div>
+        <a href="#document">/ the-document</a>
+        <a href="#records">/ the-records</a>
+        <a href="#simulation">/ the-simulation</a>
+        <div class="grp">the library</div>
+        <a href="/">/ overview</a>
+        <a href="/#format">/ the-process-format</a>
+        <a href="/#catalog">/ the-catalog-format</a>
+        <div class="grp">worked examples</div>
+        <a class="on" href="social-campaign.html">/ social-campaign</a>
+        <a href="marketing-catalog.html">/ marketing-catalog</a>
+        <div class="grp">reference</div>
+        <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">/ this-example-in-the-repo &#8599;</a>
+      </nav>
+      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
+    </aside>
+
+    <main class="main" id="top">
+
+      <div class="wrap hero">
+        <span class="eyebrow"><span class="tag">agent processes</span> &middot; a worked example</span>
+        <h1>The social <span class="am">campaign</span> process</h1>
+        <p class="lede">One process from a marketing department's
+          <a href="marketing-catalog.html">catalog</a>, written out in full. This page has the
+          document itself, the records one run left behind, and a simulation that plays that
+          run from the trigger to the close.</p>
+        <div class="cta">
+          <a class="btn btn-lead" href="#simulation">watch run 47</a>
+          <a class="btn btn-ghost" href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">this example in the repo &#8599;</a>
+        </div>
+      </div>
+
+      <section class="band" id="document">
+        <div class="wrap">
+          <p class="kicker">the document</p>
+          <h2>The process document</h2>
+          <p>Every blank in the format is filled in. The legal phase is marked
+            <code>never</code>, and the claims phase above it only became autonomous after
+            twenty clean runs.</p>
+          <pre class="code">PROCESS: social campaign              id: mkt/social-campaign   v5
+owner: Head of Social                 effective: 2026-08-19
+trigger: a campaign brief is approved in mkt/campaign-planning
+concurrency: runs may overlap - up to six live at once, one per campaign
+goal: a legally cleared campaign scheduled on every channel the brief
+      names, and a readout of how it did
+phases:
+  direction - convenes bake-off              owner: Head of Social
+              after: trigger                 by: 2 days
+              automation: supervised
+  produce   - runs build-by-talent           owner: Creative Lead
+              after: direction               by: 5 days
+              automation: supervised
+  claims    - convenes assessment            owner: Brand agent
+              after: produce                 by: 1 day
+              automation: autonomous
+  legal     - convenes approval              owner: Legal reviewer
+              after: claims                  by: 1 day
+              <span class="k">automation: never</span>
+  schedule  - system: the scheduler          owner: Social agent
+              after: legal
+              automation: autonomous
+  readout   - runs collect-and-report        owner: Analytics agent
+              after: schedule + 14 days
+              automation: autonomous
+run-scoped:
+  status    - runs collect-and-report        owner: Analytics agent
+              every: 7 days
+              from: produce   until: run close
+              automation: autonomous
+  spend     - runs allocate-and-reconcile    owner: Head of Social
+              from: trigger   until: run close
+              automation: assisted
+  community - human: field replies, escalate to the owner
+              on: a reply or complaint arrives
+              from: schedule  until: schedule + 14 days
+              automation: assisted
+policy:
+  no claim ships without a citation in the claims register
+  legal approval is a human gate and is never delegated to an agent
+  an asset changed after approval goes back through legal. There is no
+    minor-change path
+amendments:
+  v2 - claims moved out of legal into its own phase, so legal reviews
+       the exceptions rather than every asset (debrief, run 12)
+  v3 - claims raised from supervised to autonomous after twenty clean
+       runs (debrief, run 31)
+  v4 - readout moved from 7 days to 14. A week was too early to see
+       anything on the slower channels (debrief, run 38)
+  v5 - the weekly status, the budget watch, and community response
+       written down as run-scoped. All three were already happening, and
+       none was recorded (debrief, run 47)</pre>
+          <p>Version 2 is what fixed the bottleneck. Legal used to read every asset, which put
+            one reviewer in front of a process that runs forty times a quarter. Moving the claims
+            check into its own phase did not change who approves anything. It changed how much
+            reaches the reviewer, who now reads only the assets that failed the check.</p>
+        </div>
+      </section>
+
+      <section class="band" id="records">
+        <div class="wrap">
+          <p class="kicker">the records</p>
+          <h2>The records a run produces</h2>
+          <p>Each phase leaves whatever record its own kind of work produces. A phase that
+            convenes a collab pattern leaves that pattern's CONVENED and DONE records. A phase
+            that runs a work pattern leaves its plan and its JOB DONE. A system phase leaves one
+            line saying what happened and when. The run opens and closes around all of them:</p>
+          <pre class="code">RUN: mkt/social-campaign v4 &middot; run 47
+started: 2026-08-03 by Head of Social
+trigger: campaign brief CB-118, approved in mkt/campaign-planning run 9
+
+RUN DONE: mkt/social-campaign v4 &middot; run 47
+outcome: completed
+result: 14 assets live across 4 channels, scheduled 2026-08-11
+open: one asset held back - the claim about response times has no
+      citation, and the claims register entry is with Legal</pre>
+          <p>The records say v4 while the document above says v5. A run keeps the version it ran
+            under, and version 5 came out of run 47's own debrief.</p>
+          <p>Between them, those records answer what an auditor asks for. The process document
+            says what the process is, and the run records show that it ran. Because each record
+            was written as the work happened and names who acted and when, nobody has to
+            reconstruct any of it afterwards.</p>
+        </div>
+      </section>
+
+      <section class="band" id="simulation">
+        <div class="wrap">
+          <p class="kicker">the simulation</p>
+          <h2>Watching run 47</h2>
+          <p>This is the run whose records appear above, played as it happened. The left
+            column is the process document doing its job: phases light up when their
+            <code>after:</code> lines are satisfied, every record lands under the phase that
+            produced it, and the run-scoped lane fires on its own clock while the pointer is
+            elsewhere. The right side shows the inside of whichever phase is active &mdash;
+            the bake-off, the build, the assessments, the approval &mdash; drawn in the same
+            language as the simulations on <a href="https://agentcollab.dev">agentcollab.dev</a>
+            and <a href="https://agentworkpatterns.com">agentworkpatterns.com</a>, which are
+            the patterns the phases convene.</p>
+          <p>Watch what happens when legal refuses: the pointer climbs back up the column to
+            <code>produce</code>, exactly as the process's failure edge says, and both rounds
+            stay in the record.</p>
+          <div class="ph" data-psim="social-campaign-run" style="min-height:420px"></div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="wrap">
+          <span>Agent Processes &middot; your work, written down</span>
+          <a href="https://github.com/jeffrschneider/agentprocesses">GitHub &#8599;</a>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+<script>
+// The rail marker follows the section in view.
+(() => {
+  const links = [...document.querySelectorAll('.rail nav a[href^="#"]')];
+  const byId = Object.fromEntries(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const targets = Object.keys(byId).map((id) => document.getElementById(id)).filter(Boolean);
+  function setOn(id) {
+    links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + id));
+  }
+  const io = new IntersectionObserver((entries) => {
+    const visible = entries.filter((e) => e.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (visible.length) setOn(visible[0].target.id);
+  }, { rootMargin: "-20% 0px -60% 0px" });
+  targets.forEach((t) => io.observe(t));
+  links.forEach((a) => a.addEventListener("click", () => setOn(a.getAttribute("href").slice(1))));
+})();
+</script>
+<script src="sims/ps-sim.js"></script>
+<script src="sims/scores/social-campaign-run.js"></script>
+<script>PSim.mountAll();</script>
+</body>
+</html>

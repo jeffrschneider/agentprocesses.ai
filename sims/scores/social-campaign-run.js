@@ -3,7 +3,7 @@
    of whichever phase is active. Scene grammar and colors are the same as
    the simulations on agentcollab.dev and agentworkpatterns.com. */
 PSim.register('social-campaign-run', {
-  title: 'Run 47, from trigger to close',
+  title: 'Run 47',
   shape: 'mkt/social-campaign · one run',
   hue: 'address',
   blurb: 'The left column is the process document doing its job: phases light ' +
