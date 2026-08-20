@@ -289,9 +289,9 @@
               runs, a record is written.</li>
             <li><b>a person acts</b> &mdash; somebody does something outside any room.</li>
           </ul>
-          <p>The last two matter more than they look. Most real processes have steps where
-            nobody collaborates with anybody, and if the format has no way to describe those
-            steps, people end up writing down something other than what really happens.</p>
+          <p>The last two are in the list because most real processes have steps where nobody
+            collaborates with anybody. If the format has no way to describe those steps, people
+            end up writing down something other than what really happens.</p>
           <p><code>by:</code> is the deadline for a phase. It belongs to the process rather than
             to any one run, because deadlines usually come from a rule: payroll has a legal one,
             and revoking access has a security one.</p>
@@ -302,9 +302,9 @@
         <div class="wrap">
           <p class="kicker">automation</p>
           <h2>How much of a phase an agent is allowed to run</h2>
-          <p>Every phase says how much of it an agent may do. This is the part of the document
-            people actually use when they are deciding where to start, and it changes as they
-            get more confident.</p>
+          <p>Every phase says how much of it an agent may do. A team decides where to start
+            automating by reading this, and the levels move up as the team gets more
+            confident.</p>
           <div class="scroll">
             <table class="tbl">
               <thead><tr><th>level</th><th>who does the work</th><th>who decides</th></tr></thead>
@@ -379,17 +379,31 @@ amendments:
           <h2>Why a department needs a catalog</h2>
           <p>One process written down is easy enough to keep track of. Once a department has
             forty of them, nobody can hold them all in mind: it gets hard to say which ones
-            matter most, and nobody notices when one of them stops being true. A catalog is one
-            row per process, and every field in the row is copied from that process document's
-            header.</p>
-          <p>That last part is what keeps a catalog usable. It copies from the process documents
-            rather than storing anything of its own, so when the two disagree, the process
-            document is right and the row is out of date. Nobody has to maintain the same fact
-            in two places.</p>
-          <p>The automation column shows the <b>least automated phase</b> in the process. One
-            that has four autonomous phases and a legal approval is not an automated process,
-            and a catalog that averaged them would make the department look further along than
-            it is.</p>
+            matter most, and nobody notices when one of them stops being true.</p>
+          <p>A catalog is a table with one row per process. Each row says the same few things
+            about its process, so you can read the whole department at once and know which
+            documents to open:</p>
+          <div class="scroll">
+            <table class="tbl">
+              <thead><tr><th>column</th><th>comes from</th><th>what it tells you</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">id</td><td>the header</td><td>the name other documents cite, which never changes even when the process is renamed</td></tr>
+                <tr><td class="mono">owner</td><td>the header</td><td>the person answerable for the document</td></tr>
+                <tr><td class="mono">trigger</td><td>the header</td><td>what has to happen for a run to start</td></tr>
+                <tr><td class="mono">runs</td><td>measures</td><td>roughly how often, which is how you find the high-volume work</td></tr>
+                <tr><td class="mono">automation</td><td>phases</td><td>the least automated phase in the process</td></tr>
+                <tr><td class="mono">fed by / feeds</td><td>the header</td><td>which processes this one waits on, and which ones wait on it</td></tr>
+                <tr><td class="mono">status</td><td>the header</td><td>documented, running, or retired</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Every one of those is copied from the process document's header, and that is what
+            keeps a catalog usable. A row stores nothing of its own, so when the two disagree,
+            the process document is right and the row is out of date. Nobody has
+            to maintain the same fact in two places.</p>
+          <p>The automation column shows the <b>least automated phase</b> in the process, so a
+            process with four autonomous phases and one legal approval reads as a manual gate.
+            Averaging them instead would make the department look further along than it is.</p>
           <h3>Coverage and upkeep</h3>
           <ul class="plain">
             <li><b>Work that is missing from the catalog gets missed.</b> You cannot automate it,
@@ -411,9 +425,9 @@ amendments:
         <div class="wrap">
           <p class="kicker">a worked process</p>
           <h2>The social campaign process</h2>
-          <p>One row of a marketing department's catalog, with every line answered. Note the
-            phase that says <code>never</code>, and what the amendment history records about the
-            phase above it.</p>
+          <p>This is one process from the marketing catalog below, with every blank filled in.
+            The legal phase is marked <code>never</code>, and the claims phase above it only
+            became autonomous after twenty clean runs.</p>
           <pre class="code">PROCESS: social campaign              id: mkt/social-campaign   v4
 owner: Head of Social                 effective: 2026-06-01
 trigger: a campaign brief is approved in mkt/campaign-planning
@@ -451,10 +465,10 @@ amendments:
        runs (debrief, run 31)
   v4 - readout moved from 7 days to 14. A week was too early to see
        anything on the slower channels (debrief, run 38)</pre>
-          <p>Version 2 is worth reading twice. Legal used to read every asset, which made one
-            reviewer the bottleneck for a process that runs forty times a quarter. Moving the
-            claims check into its own phase did not change who approves anything. It changed how
-            much reaches the reviewer, who now only reads the assets that failed the check.</p>
+          <p>Version 2 is what fixed the bottleneck. Legal used to read every asset, which put
+            one reviewer in front of a process that runs forty times a quarter. Moving the claims
+            check into its own phase did not change who approves anything. It changed how much
+            reaches the reviewer, who now reads only the assets that failed the check.</p>
 
           <h3>The records a run produces</h3>
           <p>Each phase leaves whatever record its own kind of work produces. A phase that
@@ -481,9 +495,36 @@ open: one asset held back - the claim about response times has no
         <div class="wrap">
           <p class="kicker">a worked catalog</p>
           <h2>A marketing department's catalog</h2>
-          <p>This is the part of a catalog people use most. The number on a box is how many other
-            processes wait on that one. Eight of the department's eleven processes are drawn
-            here.</p>
+          <p>This is the whole department: eleven processes, one row each. It is what you have
+            after a first pass, which is enough to see what exists, who owns it, and where the
+            work piles up.</p>
+          <div class="scroll">
+            <table class="tbl">
+              <thead><tr><th>id</th><th>owner</th><th>trigger</th><th>runs</th><th>automation</th><th>status</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">mkt/campaign-planning</td><td>VP Marketing</td><td>the quarter opens</td><td>4 a year</td><td class="mono">assisted</td><td>running</td></tr>
+                <tr><td class="mono">mkt/competitor-review</td><td>Product Marketing</td><td>monthly, or a competitor announcement</td><td>~16 a year</td><td class="mono">supervised</td><td>running</td></tr>
+                <tr><td class="mono">mkt/social-campaign</td><td>Head of Social</td><td>a campaign brief is approved</td><td>~40 a quarter</td><td class="mono">never</td><td>running</td></tr>
+                <tr><td class="mono">mkt/email-campaign</td><td>Lifecycle Marketing</td><td>a campaign brief is approved</td><td>~20 a quarter</td><td class="mono">never</td><td>running</td></tr>
+                <tr><td class="mono">mkt/website-update</td><td>Web Lead</td><td>a change request is filed</td><td>~30 a quarter</td><td class="mono">supervised</td><td>running</td></tr>
+                <tr><td class="mono">mkt/lead-routing</td><td>Demand Gen</td><td>a form is submitted</td><td>~400 a week</td><td class="mono">autonomous</td><td>running</td></tr>
+                <tr><td class="mono">mkt/claims-register</td><td>Product Marketing</td><td>a new claim is proposed</td><td>~10 a quarter</td><td class="mono">never</td><td>running</td></tr>
+                <tr><td class="mono">mkt/brand-review</td><td>Brand Lead</td><td>twice a year, or on request</td><td>2 a year</td><td class="mono">assisted</td><td>running</td></tr>
+                <tr><td class="mono">mkt/event</td><td>Events Lead</td><td>an event is committed to</td><td>~6 a year</td><td class="mono">manual</td><td>documented</td></tr>
+                <tr><td class="mono">mkt/agency-brief</td><td>Head of Social</td><td>work is sent to an agency</td><td>~8 a quarter</td><td class="mono">manual</td><td>documented</td></tr>
+                <tr><td class="mono">mkt/quarterly-readout</td><td>VP Marketing</td><td>the quarter closes</td><td>4 a year</td><td class="mono">supervised</td><td>running</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Two rows say <code>documented</code> rather than <code>running</code>, which means
+            the process is written down but nobody has run it against the document yet. A catalog that says a
+            process is running before it has run is one people stop believing, so the state is
+            recorded as it stands.</p>
+
+          <h3>The same catalog as a graph</h3>
+          <p>Drawing the <code>feeds</code> and <code>fed by</code> columns shows which
+            processes hold up which. The number on a box is how many others wait on that one,
+            and eight of the eleven are drawn here.</p>
 
           <svg class="pmap" viewBox="0 0 680 300" role="img" aria-label="the marketing catalog dependency graph: the competitor review and the claims register feed most of it">
       <defs><marker id="pah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
