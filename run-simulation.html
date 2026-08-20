@@ -21,6 +21,9 @@
     .mpan svg{ display:block; }
     .mpan-hint{ font-family:var(--wire); font-size:.68rem; color:var(--faint);
       margin:8px 0 0; }
+    .mpan-title{ position:sticky; left:0; width:max-content; max-width:100%;
+      font-family:var(--disp); font-weight:600; font-size:.98rem; color:var(--paper);
+      padding:2px 6px 10px; }
   </style>
 </head>
 <body>
@@ -77,32 +80,33 @@
             gone stale sends the team back to produce new assets. The dashed frame holds the
             work that keeps going for as long as the campaign is live.</p>
           <div class="mpan" id="mpan">
+            <div class="mpan-title">The Social Campaign Process</div>
             <pre class="mermaid">
 flowchart LR
   T(["a campaign brief arrives"]) --> IN
-  IN["<b>take in the brief</b><br>work out what it must accomplish<br>manager"] --> PAR
-  PAR["<b>set the parameters</b><br>platforms, audience, dates, budget<br>manager &middot; leadership on budget"] --> CRB
+  IN["<b>1. take in the brief</b><br>work out what it must accomplish<br>manager"] --> PAR
+  PAR["<b>2. set the parameters</b><br>platforms, audience, dates, budget<br>manager &middot; leadership on budget"] --> CRB
   PAR --> PRC
-  CRB["<b>brief the creatives</b><br>say what is needed and by when<br>manager &middot; creative team"] --> DIR
-  DIR["<b>settle on a direction</b><br>weigh concepts until one is worth backing<br>manager &middot; creative team"] --> PRO
-  PRO["<b>produce the posts</b><br>copy, images, video, sized per platform<br>copywriter &middot; designer &middot; video editor"] --> SGN
-  SGN["<b>get sign-offs</b><br>brand and legal approve the material<br>manager &middot; brand &middot; legal"] --> GO
+  CRB["<b>3. brief the creatives</b><br>say what is needed and by when<br>manager &middot; creative team"] --> DIR
+  DIR["<b>4. settle on a direction</b><br>weigh concepts until one is worth backing<br>manager &middot; creative team"] --> PRO
+  PRO["<b>5. produce the posts</b><br>copy, images, video, sized per platform<br>copywriter &middot; designer &middot; video editor"] --> SGN
+  SGN["<b>6. get sign-offs</b><br>brand and legal approve the material<br>manager &middot; brand &middot; legal"] --> GO
   SGN -. "changes requested" .-> PRO
-  PRC["<b>set up the practical side</b><br>tracking, landing pages, ad setup, schedule<br>manager &middot; media buyer &middot; web team"] --> GO
-  GO["<b>launch</b><br>posts go out, the ads start<br>manager"] --> WATCH
+  PRC["<b>7. set up the practical side</b><br>tracking, landing pages, ad setup, schedule<br>manager &middot; media buyer &middot; web team"] --> GO
+  GO["<b>8. launch</b><br>posts go out, the ads start<br>manager"] --> WATCH
   GO --> ENG
   GO --> OPT
   subgraph FLIGHT["while the campaign is live"]
-    WATCH["<b>watch performance</b><br>track results against the brief<br>manager &middot; analytics"]
-    ENG["<b>engage</b><br>answer comments and messages<br>manager or community manager"]
-    OPT["<b>optimize</b><br>move ad money, swap stale creative<br>manager &middot; media buyer"]
+    WATCH["<b>9. watch performance</b><br>track results against the brief<br>manager &middot; analytics"]
+    ENG["<b>10. engage</b><br>answer comments and messages<br>manager or community manager"]
+    OPT["<b>11. optimize</b><br>move ad money, swap stale creative<br>manager &middot; media buyer"]
   end
   OPT -. "needs new assets" .-> PRO
   WATCH --> WRAP
   ENG --> WRAP
   OPT --> WRAP
-  WRAP["<b>wrap up</b><br>ads off, numbers pulled, reported<br>manager"] --> LRN
-  LRN["<b>record what was learned</b><br>what to repeat, what to avoid<br>manager"] --> DONE(["the campaign is closed"])
+  WRAP["<b>12. wrap up</b><br>ads off, numbers pulled, reported<br>manager"] --> LRN
+  LRN["<b>13. record what was learned</b><br>what to repeat, what to avoid<br>manager"] --> DONE(["the campaign is closed"])
   classDef act fill:#0F1D22,stroke:#6BA8FF,color:#E7EFEC;
   classDef gate fill:#151a14,stroke:#F2A93B,color:#E7EFEC;
   classDef ends fill:#0b1220,stroke:#4A5D5A,color:#7C918C;
