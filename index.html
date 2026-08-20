@@ -343,6 +343,11 @@ phases:
   &lt;name&gt; - &lt;runs|convenes|system:|human:&gt; &lt;what&gt;   owner: &lt;who&gt;
            after: &lt;phase names, or trigger&gt;        by: &lt;deadline&gt;
            automation: &lt;manual|assisted|supervised|autonomous|never&gt;
+run-scoped:
+  &lt;name&gt; - &lt;runs|convenes|system:|human:&gt; &lt;what&gt;   owner: &lt;who&gt;
+           every: &lt;cadence&gt; | on: &lt;event&gt;
+           from: &lt;phase or trigger&gt;   until: &lt;phase or run close&gt;
+           automation: &lt;manual|assisted|supervised|autonomous|never&gt;
 handoffs:
   &lt;phase&gt; -&gt; &lt;phase&gt;: &lt;what crosses, and what it has to contain&gt;
 bindings:
@@ -362,6 +367,13 @@ amendments:
             whether it may write to them, and the reference material it reads. They also settle
             permissions in advance. When a trigger fires, nobody should still be working out what
             the agents are allowed to do.</p>
+          <p><b>Run-scoped</b> lines cover what never sits in a phase: the weekly status
+            report, the budget watch, the escalation path. They run or convene patterns the way
+            phases do and carry the same automation level, but instead of <code>after:</code>
+            edges they carry a cadence or an event, plus <code>from:</code> and
+            <code>until:</code> lines saying when they are live. Most of a process's management
+            lives here, and a process that lists only its phases reads as if nobody is watching
+            between handoffs.</p>
           <p><b>Policy</b> is kept apart from coordination on purpose. A rule like "one agent
             holds the pen during synthesis" is about coordination: it comes from the pattern, and
             it applies anywhere that pattern is used. A rule like "no claim ships without a
@@ -428,14 +440,14 @@ amendments:
           <p>This is one process from the marketing catalog below, with every blank filled in.
             The legal phase is marked <code>never</code>, and the claims phase above it only
             became autonomous after twenty clean runs.</p>
-          <pre class="code">PROCESS: social campaign              id: mkt/social-campaign   v4
-owner: Head of Social                 effective: 2026-06-01
+          <pre class="code">PROCESS: social campaign              id: mkt/social-campaign   v5
+owner: Head of Social                 effective: 2026-08-19
 trigger: a campaign brief is approved in mkt/campaign-planning
 concurrency: runs may overlap - up to six live at once, one per campaign
 goal: a legally cleared campaign scheduled on every channel the brief
       names, and a readout of how it did
 phases:
-  direction - runs evaluate-options          owner: Head of Social
+  direction - convenes bake-off              owner: Head of Social
               after: trigger                 by: 2 days
               automation: supervised
   produce   - runs build-by-talent           owner: Creative Lead
@@ -453,6 +465,18 @@ phases:
   readout   - runs collect-and-report        owner: Analytics agent
               after: schedule + 14 days
               automation: autonomous
+run-scoped:
+  status    - runs collect-and-report        owner: Analytics agent
+              every: 7 days
+              from: produce   until: run close
+              automation: autonomous
+  spend     - runs allocate-and-reconcile    owner: Head of Social
+              from: trigger   until: run close
+              automation: assisted
+  community - human: field replies, escalate to the owner
+              on: a reply or complaint arrives
+              from: schedule  until: schedule + 14 days
+              automation: assisted
 policy:
   no claim ships without a citation in the claims register
   legal approval is a human gate and is never delegated to an agent
@@ -464,7 +488,10 @@ amendments:
   v3 - claims raised from supervised to autonomous after twenty clean
        runs (debrief, run 31)
   v4 - readout moved from 7 days to 14. A week was too early to see
-       anything on the slower channels (debrief, run 38)</pre>
+       anything on the slower channels (debrief, run 38)
+  v5 - the weekly status, the budget watch, and community response
+       written down as run-scoped. All three were already happening, and
+       none was recorded (debrief, run 47)</pre>
           <p>Version 2 is what fixed the bottleneck. Legal used to read every asset, which put
             one reviewer in front of a process that runs forty times a quarter. Moving the claims
             check into its own phase did not change who approves anything. It changed how much
@@ -484,6 +511,8 @@ outcome: completed
 result: 14 assets live across 4 channels, scheduled 2026-08-11
 open: one asset held back - the claim about response times has no
       citation, and the claims register entry is with Legal</pre>
+          <p>The records say v4 while the document above says v5. A run keeps the version it ran
+            under, and version 5 came out of run 47's own debrief.</p>
           <p>Between them, those records answer what an auditor asks for. The process document
             says what the process is, and the run records show that it ran. Because each record
             was written as the work happened and names who acted and when, nobody has to
