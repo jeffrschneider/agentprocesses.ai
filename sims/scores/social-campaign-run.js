@@ -1,318 +1,321 @@
-/* Run 47 of mkt/social-campaign, from trigger to close.
-   The left column is the process document; the right panel is the inside
-   of whichever phase is active. Scene grammar and colors are the same as
-   the simulations on agentcollab.dev and agentworkpatterns.com. */
+/* One run of the social campaign, following the thirteen activities in
+   the diagram above the simulation. The left column lists the activities
+   by name and description; the right panel shows the people doing
+   whichever activity is active. */
 PSim.register('social-campaign-run', {
   title: 'One run of the social campaign',
   shape: 'the simulation',
   hue: 'address',
-  blurb: 'The process document is on the left, the inside of the active phase ' +
-    'is on the right, and the records land as the run produces them.',
+  blurb: 'The activities are on the left, the people doing the active one are ' +
+    'on the right, and the record of the run builds up as it goes.',
   doc: 'https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md',
   docLabel: 'read the process ↗',
 
-  runLabel: 'RUN: mkt/social-campaign v4 · run 47',
-  runMeta: 'started 2026-08-03 · trigger: brief CB-118',
+  colHead: 'activities',
+  runLabel: 'The Social Campaign Process',
+  runMeta: 'one run · campaign brief CB-118',
   runDone: {
-    head: 'RUN DONE · completed',
-    lines: ['result: 14 assets live · 4 channels',
-            'open: the response-time claim,', 'with Legal']
+    head: 'the campaign is closed',
+    lines: ['reported against the brief', 'learnings recorded for the next one']
   },
 
   phases: [
-    { id: 'direction', name: 'direction', kind: 'convenes bake-off',
-      meta: 'after: trigger · by: 2 days · supervised' },
-    { id: 'produce', name: 'produce', kind: 'runs build-by-talent',
-      meta: 'after: direction · by: 5 days · supervised' },
-    { id: 'claims', name: 'claims', kind: 'convenes assessment',
-      meta: 'after: produce · by: 1 day · autonomous' },
-    { id: 'legal', name: 'legal', kind: 'convenes approval',
-      meta: 'after: claims · by: 1 day · never' },
-    { id: 'schedule', name: 'schedule', kind: 'system: the scheduler',
-      meta: 'after: legal · autonomous' },
-    { id: 'readout', name: 'readout', kind: 'runs collect-and-report',
-      meta: 'after: schedule + 14 days · autonomous' }
+    { id: 'a1', name: '1. take in the brief',
+      kind: 'work out what it must accomplish', meta: 'manager' },
+    { id: 'a2', name: '2. set the parameters',
+      kind: 'platforms, audience, dates, budget', meta: 'manager · leadership' },
+    { id: 'a3', name: '3. brief the creatives',
+      kind: 'say what is needed and by when', meta: 'manager · creative team' },
+    { id: 'a4', name: '4. settle on a direction',
+      kind: 'weigh concepts until one is worth backing', meta: 'manager · creative team' },
+    { id: 'a5', name: '5. produce the posts',
+      kind: 'copy, images, video, sized per platform', meta: 'copywriter · designer · video editor' },
+    { id: 'a6', name: '6. get sign-offs',
+      kind: 'brand and legal approve the material', meta: 'manager · brand · legal' },
+    { id: 'a7', name: '7. set up the practical side',
+      kind: 'tracking, landing pages, ad setup, schedule', meta: 'manager · media buyer · web team' },
+    { id: 'a8', name: '8. launch',
+      kind: 'posts go out, the ads start', meta: 'manager' },
+    { id: 'a9', name: '9. watch performance',
+      kind: 'track results against the brief', meta: 'manager · analytics' },
+    { id: 'a10', name: '10. engage',
+      kind: 'answer comments and messages', meta: 'community manager' },
+    { id: 'a11', name: '11. optimize',
+      kind: 'move ad money, swap stale creative', meta: 'manager · media buyer' },
+    { id: 'a12', name: '12. wrap up',
+      kind: 'ads off, numbers pulled, reported', meta: 'manager' },
+    { id: 'a13', name: '13. record what was learned',
+      kind: 'what to repeat, what to avoid', meta: 'manager' }
   ],
 
-  lanes: [
-    { id: 'status', name: 'status', kind: 'collect-and-report · every 7 days' },
-    { id: 'spend', name: 'spend', kind: 'allocate-and-reconcile · from trigger' },
-    { id: 'community', name: 'community', kind: 'human: field replies · on: a reply' }
-  ],
+  lanes: [],
 
   scenes: {
-    trigger: { quiet: 'a campaign brief is approved · a run opens' },
-    flight: { quiet: 'the campaign is live · no phase is active' },
-    close: { quiet: 'every phase closed · every lane closed' },
-    sched: { sysHead: 'system: the scheduler' },
+    arrive: { quiet: 'a campaign brief arrives' },
+    closeq: { quiet: 'the campaign is closed' },
+    practical: { sysHead: 'the practical side' },
+    golive: { sysHead: 'launch' },
 
-    bakeoff: {
-      room: 'direction · one room', pattern: 'bake-off · agent collab',
+    intake: {
+      room: 'taking in the brief',
       cast: [
-        { id: 'hs', title: 'Head of Social', mono: 'HS', role: 'owns the decision', kind: 'chair', at: [0.5, 0.16] },
-        { id: 'ca', title: 'Concept agent A', mono: 'CA', role: 'one concept', kind: 'peer', at: [0.24, 0.62] },
-        { id: 'cb', title: 'Concept agent B', mono: 'CB', role: 'one concept', kind: 'peer', at: [0.76, 0.62] }
+        { id: 'mg', title: 'Social media manager', mono: 'MG', role: 'runs the campaign', kind: 'chair', at: [0.32, 0.42] }
       ],
       props: [
-        { id: 'bf', kind: 'artifact', label: 'campaign brief CB-118', at: [0.5, 0.95], w: 190 }
+        { id: 'bf', kind: 'artifact', label: 'campaign brief CB-118', at: [0.72, 0.42], w: 180 }
       ]
     },
 
-    bbt: {
-      room: 'produce · a sub-job', pattern: 'build-by-talent · work pattern',
+    params: {
+      room: 'setting the parameters',
       cast: [
-        { id: 'cl', title: 'Creative Lead', mono: 'CL', role: 'cuts the slices', kind: 'chair', at: [0.5, 0.14] },
-        { id: 'cp', title: 'Copy agent', mono: 'CP', role: 'copy', kind: 'peer', at: [0.2, 0.6] },
-        { id: 'ds', title: 'Design agent', mono: 'DS', role: 'design', kind: 'peer', at: [0.5, 0.6] },
-        { id: 'vd', title: 'Video agent', mono: 'VD', role: 'video', kind: 'peer', at: [0.8, 0.6] }
-      ],
-      props: [
-        { id: 'as', kind: 'artifact', label: 'the assets', hidden: true, at: [0.5, 0.97], w: 150 }
+        { id: 'mg', title: 'Social media manager', mono: 'MG', role: 'proposes the plan', kind: 'chair', at: [0.3, 0.58] },
+        { id: 'ld', title: 'Marketing lead', mono: 'LD', role: 'confirms the budget', kind: 'pen', at: [0.7, 0.26] }
       ]
     },
 
-    assess: {
-      room: 'claims · one room', pattern: 'assessment · agent collab',
+    creative: {
+      room: 'the creative work',
       cast: [
-        { id: 'br', title: 'Brand agent', mono: 'BR', role: 'scores the claims', kind: 'pen', at: [0.26, 0.42] }
+        { id: 'mg', title: 'Social media manager', mono: 'MG', role: 'runs the campaign', kind: 'chair', at: [0.5, 0.14] },
+        { id: 'cp', title: 'Copywriter', mono: 'CP', role: 'copy', kind: 'peer', at: [0.2, 0.6] },
+        { id: 'ds', title: 'Designer', mono: 'DS', role: 'design', kind: 'peer', at: [0.5, 0.6] },
+        { id: 'vd', title: 'Video editor', mono: 'VD', role: 'video', kind: 'peer', at: [0.8, 0.6] }
       ],
       props: [
-        { id: 'rg', kind: 'register', label: 'claims register', version: 'v12', frozen: true, at: [0.72, 0.22], w: 170 },
-        { id: 'as2', kind: 'artifact', label: 'the assets', version: 'v1', at: [0.72, 0.68], w: 170 }
+        { id: 'as', kind: 'artifact', label: 'the posts', hidden: true, at: [0.5, 0.97], w: 150 }
       ]
     },
 
-    approval: {
-      room: 'legal · one room', pattern: 'approval · agent collab',
+    signoff: {
+      room: 'sign-offs',
       cast: [
-        { id: 'lg', title: 'Legal reviewer', mono: 'LG', role: 'a person, never automated', kind: 'pen', at: [0.28, 0.42] }
+        { id: 'br', title: 'Brand reviewer', mono: 'BR', role: 'reads against the guidelines', kind: 'pen', at: [0.28, 0.2] },
+        { id: 'lg', title: 'Legal reviewer', mono: 'LG', role: 'a person signs', kind: 'pen', at: [0.28, 0.64] }
       ],
       props: [
-        { id: 'as3', kind: 'artifact', label: 'the assets', version: 'v1', at: [0.72, 0.42], w: 170 }
+        { id: 'as3', kind: 'artifact', label: 'the posts', version: 'v1', at: [0.72, 0.42], w: 160 }
       ]
     },
 
-    bbt2: {
-      room: 'produce · round 2', pattern: 'build-by-talent · work pattern',
+    live: {
+      room: 'the campaign, live',
       cast: [
-        { id: 'cl2', title: 'Creative Lead', mono: 'CL', role: 'reopens one slice', kind: 'chair', at: [0.28, 0.26] },
-        { id: 'cp2', title: 'Copy agent', mono: 'CP', role: 'revises the copy', kind: 'peer', at: [0.72, 0.55] }
-      ],
-      props: [
-        { id: 'as4', kind: 'artifact', label: 'the assets', version: 'v1', at: [0.28, 0.82], w: 150 }
+        { id: 'mg', title: 'Social media manager', mono: 'MG', role: 'watches the numbers', kind: 'chair', at: [0.5, 0.16] },
+        { id: 'cm', title: 'Community manager', mono: 'CM', role: 'answers everyone', kind: 'peer', at: [0.22, 0.6] },
+        { id: 'mb', title: 'Media buyer', mono: 'MB', role: 'moves the money', kind: 'peer', at: [0.78, 0.6] }
       ]
     },
 
-    car: {
-      room: 'readout · a sub-job', pattern: 'collect-and-report · work pattern',
+    wrap: {
+      room: 'wrapping up',
       cast: [
-        { id: 'an', title: 'Analytics agent', mono: 'AN', role: 'asks and merges', kind: 'pen', at: [0.5, 0.16] },
-        { id: 'c1', title: 'Social channel', mono: 'SC', role: 'reports numbers', kind: 'peer', at: [0.2, 0.62] },
-        { id: 'c2', title: 'Search channel', mono: 'SE', role: 'reports numbers', kind: 'peer', at: [0.5, 0.62] },
-        { id: 'c3', title: 'Email channel', mono: 'EM', role: 'reports numbers', kind: 'peer', at: [0.8, 0.62] }
+        { id: 'mg', title: 'Social media manager', mono: 'MG', role: 'writes the report', kind: 'chair', at: [0.3, 0.58] },
+        { id: 'ld', title: 'Marketing lead', mono: 'LD', role: 'reads it', kind: 'pen', at: [0.7, 0.26] }
       ]
     }
   },
 
   steps: [
-    { phase: 'The trigger', scene: 'trigger', dur: 5600,
+    { phase: 'A brief arrives', scene: 'arrive', dur: 4600,
       runOpen: true,
-      lane: { spend: { live: true, chip: 'allocated: 3 lines' } },
-      log: '· trigger: brief CB-118 approved · the RUN record opens',
-      note: 'A campaign brief is approved in campaign-planning, which is this ' +
-        'process\'s trigger. A run opens and its RUN record is written. The spend ' +
-        'line attaches to the run at once: allocate-and-reconcile posts the budget ' +
-        'as three lines before anything is spent.' },
+      log: '· campaign brief CB-118 arrives, approved',
+      note: 'A campaign brief arrives from planning, already approved. One run ' +
+        'of the process starts, and the first eight activities take the ' +
+        'campaign from this brief to launch.' },
 
-    { phase: 'direction — convenes bake-off', scene: 'bakeoff',
-      run: { direction: 'active' },
-      say: 'hs', to: 'room', k: 'broadcast', wire: 'two concepts, please',
-      set: { ca: 'working', cb: 'working' },
-      log: 'the brief is posted · two concepts, please',
-      note: 'The first phase is a single room running agentcollab\'s bake-off. ' +
-        'The Head of Social posts the brief and commissions two concepts that do ' +
-        'not exist yet, which is why this phase is a bake-off rather than ' +
-        'evaluate-options.' },
+    { phase: '1. take in the brief', scene: 'intake',
+      run: { a1: 'active' },
+      say: 'mg', to: 'bf', k: 'pen', wire: 'goal: fall-launch signups',
+      log: 'the manager works out what it must accomplish',
+      note: 'The manager reads the brief and pulls out what the campaign must ' +
+        'accomplish, because every later judgment call comes back to that.' },
 
-    { say: 'ca', to: 'hs', k: 'pen', wire: 'concept A', set: { ca: 'done' },
-      phase: 'direction — convenes bake-off',
-      log: 'delivers concept A',
-      note: 'Each concept is built privately and delivered to the owner. The ' +
-        'makers never see each other\'s entries before the verdict.' },
+    { phase: '2. set the parameters', scene: 'params',
+      run: { a1: 'done', a2: 'active' },
+      rec: { ph: 'a1', t: 'goal set', k: 'done' },
+      say: 'mg', to: 'ld', k: 'pen', wire: '4 channels · 6 weeks · $40k',
+      log: 'platforms, audience, dates and budget proposed',
+      note: 'The manager decides where the campaign runs, who it should reach ' +
+        'and when it has to be live, and puts a number on it.' },
 
-    { say: 'cb', to: 'hs', k: 'pen', wire: 'concept B', set: { cb: 'done' },
-      phase: 'direction — convenes bake-off',
-      log: 'delivers concept B',
-      note: 'Both entries are in. The owner judges them against the brief.' },
+    { say: 'ld', to: 'mg', k: 'verdict', wire: 'budget confirmed',
+      phase: '2. set the parameters',
+      log: 'leadership confirms the money',
+      note: 'The budget is the one call the manager does not make alone.' },
 
-    { say: 'hs', to: 'room', k: 'verdict', wire: 'concept B wins',
-      phase: 'direction — convenes bake-off',
-      log: 'concept B wins',
-      note: 'The verdict closes the room. The handoff line in the process says ' +
-        'what crosses to produce: the winning concept and the channel list, with ' +
-        'the verdicts it won on.' },
-
-    { phase: 'produce — runs build-by-talent', scene: 'bbt',
-      run: { direction: 'done', produce: 'active' },
-      rec: { ph: 'direction', t: 'DONE · bake-off', k: 'done' },
-      lane: { status: { live: true } },
-      say: 'cl', to: 'room', k: 'broadcast', wire: 'three slices, seams named',
+    { phase: '3. brief the creatives', scene: 'creative',
+      run: { a2: 'done', a3: 'active', a7: 'active' },
+      rec: { ph: 'a2', t: 'parameters set', k: 'done' },
+      say: 'mg', to: 'room', k: 'broadcast', wire: 'the brief · concepts by friday',
       set: { cp: 'working', ds: 'working', vd: 'working' },
-      log: 'three slices, seams named · produce opens',
-      note: 'produce is a whole sub-job: it runs the build-by-talent work ' +
-        'pattern, with its own plan and its own close. The status line also goes ' +
-        'live now, because the process says weekly reporting starts with ' +
-        'production.' },
+      log: 'the creative team hears the brief together',
+      note: 'The designer, copywriter and video editor all hear the same brief ' +
+        'at the same time. Activity 7, the practical side, starts now too and ' +
+        'runs alongside everything up to launch - the column shows both lit.' },
 
-    { phase: 'produce — runs build-by-talent', dur: 3600,
-      lane: { status: { chip: 'week 1 report' } },
-      log: '· the specialists build in their slices · status files week 1',
-      note: 'The specialists build inside their slices while the seams hold. ' +
-        'Meanwhile the status line files its first weekly report — a run-scoped ' +
-        'line firing while a phase is mid-flight, which no after: edge could ' +
-        'describe.' },
+    { phase: '4. settle on a direction',
+      run: { a3: 'done', a4: 'active' },
+      rec: { ph: 'a3', t: 'briefed', k: 'done' },
+      say: 'ds', to: 'mg', k: 'pen', wire: 'concept A',
+      log: 'the first concept comes back',
+      note: 'Two concepts come back, each developed far enough to judge.' },
 
-    { say: 'cl', to: 'as', k: 'pen', wire: 'integrated: 15 assets',
-      phase: 'produce — runs build-by-talent',
+    { say: 'cp', to: 'mg', k: 'pen', wire: 'concept B',
+      phase: '4. settle on a direction',
+      log: 'the second concept comes back',
+      note: 'The manager weighs both against the goal from the brief.' },
+
+    { say: 'mg', to: 'room', k: 'verdict', wire: 'concept B · go',
+      phase: '4. settle on a direction',
+      log: 'a direction worth backing',
+      note: 'The manager picks the one worth backing and says why, so the team ' +
+        'knows what to protect while they produce against it.' },
+
+    { phase: '5. produce the posts', dur: 3600,
+      run: { a4: 'done', a5: 'active' },
+      rec: { ph: 'a4', t: 'concept B', k: 'done' },
+      log: '· copy, images and video get made inside the direction',
+      note: 'Copy, images and video get made inside the chosen direction, each ' +
+        'sized and worded for its platform.' },
+
+    { say: 'mg', to: 'as', k: 'pen', wire: 'assets ready · v1',
+      phase: '5. produce the posts',
       prop: { as: { hidden: false, version: 'v1' } },
       set: { cp: 'done', ds: 'done', vd: 'done' },
-      log: 'integrated · 15 assets at v1',
-      note: 'The slices integrate into fifteen assets. The process only ever ' +
-        'sees this sub-job\'s output and its JOB DONE record; it never reaches ' +
-        'inside.' },
+      log: 'the finished posts land in one place',
+      note: 'The finished posts land in one place, at a version, so everyone ' +
+        'downstream reads the same thing.' },
 
-    { phase: 'claims — convenes assessment', scene: 'assess',
-      run: { produce: 'done', claims: 'active' },
-      rec: { ph: 'produce', t: 'JOB DONE', k: 'job' },
-      say: 'br', to: 'as2', k: 'verdict', wire: 'scored: 14 pass · 1 fail',
-      log: 'scored against the register · 14 pass, 1 fail',
-      note: 'claims is autonomous: an agent scores every claim against the ' +
-        'register at its version, and nobody reviews the scoring — the record is ' +
-        'the check. One claim, about response times, has no citation.' },
+    { phase: '6. get sign-offs', scene: 'signoff',
+      run: { a5: 'done', a6: 'active' },
+      rec: { ph: 'a5', t: 'posts v1', k: 'done' },
+      say: 'br', to: 'as3', k: 'verdict', wire: 'brand: fine',
+      log: 'brand reads it against the guidelines',
+      note: 'Brand checks the material against the guidelines and passes it.' },
 
-    { phase: 'legal — convenes approval', scene: 'approval',
-      run: { claims: 'done', legal: 'active' },
-      rec: { ph: 'claims', t: 'DONE · 1 fail', k: 'done' },
-      say: 'lg', to: 'room', k: 'verdict', wire: 'REDLINE · response-time claim',
-      log: 'REDLINE — the response-time claim',
-      note: 'legal is marked never: a person signs or refuses no matter how good ' +
-        'the agents get, and only reads what failed the claims check. The ' +
-        'reviewer refuses.' },
+    { say: 'lg', to: 'room', k: 'verdict', wire: 'legal: changes requested',
+      phase: '6. get sign-offs',
+      run: { a6: 'failed' }, set: { lg: 'failed' },
+      rec: { ph: 'a6', t: 'changes requested', k: 'fail' },
+      log: 'legal will not sign one of the claims',
+      note: 'Legal will not sign one of the claims. This is the first dotted ' +
+        'edge in the diagram: the work goes back to produce, and only the ' +
+        'part that failed.' },
 
-    { phase: 'The failure edge', dur: 3600,
-      run: { legal: 'failed' }, set: { lg: 'failed' },
-      rec: { ph: 'legal', t: 'REDLINE', k: 'fail' },
-      log: '· a gate refused · the process names where the run goes',
-      note: 'A refused gate is a process-level failure edge, and the document ' +
-        'already says where the run goes: back to produce rather than back to ' +
-        'the start. The direction was never the problem.' },
+    { phase: '5. produce the posts - again', scene: 'creative',
+      run: { a5: 'redo' },
+      prop: { as: { hidden: false, version: 'v1' } },
+      say: 'mg', to: 'cp', k: 'direct', wire: 'soften the claim in post 7',
+      set: { cp: 'working' },
+      log: 'only the copy reopens',
+      note: 'Only the copy reopens. The images and video stand, because the ' +
+        'sign-off named exactly what it wanted changed.' },
 
-    { phase: 'produce — round 2', scene: 'bbt2',
-      run: { produce: 'redo' },
-      say: 'cl2', to: 'cp2', k: 'direct', wire: 'fix the response-time line',
-      set: { cp2: 'working' },
-      log: 'reopen the copy slice only',
-      note: 'The pointer climbs back up the column. Only the copy slice ' +
-        'reopens; design and video stay closed, because the failure edge names ' +
-        'what it needs rather than rerunning everything.' },
+    { say: 'cp', to: 'mg', k: 'pen', wire: 'copy v2',
+      phase: '5. produce the posts - again',
+      bump: { as: 'v2' }, set: { cp: 'done' },
+      run: { a5: 'done' },
+      rec: { ph: 'a5', t: 'posts v2', k: 'done' },
+      log: 'the fix lands and the posts move to v2',
+      note: 'The fix lands and the posts move to version 2. Both rounds stay ' +
+        'in the column, because the record is the run\'s history.' },
 
-    { say: 'cp2', to: 'cl2', k: 'pen', wire: 'copy v2',
-      phase: 'produce — round 2',
-      bump: { as4: 'v2' }, set: { cp2: 'done' },
-      log: 'copy v2 · the assets move to v2',
-      note: 'The revised copy lands and the assets move to version 2. Round two ' +
-        'gets its own JOB DONE; nobody overwrites round one, because the records ' +
-        'are the run\'s history.' },
-
-    { phase: 'claims — again', scene: 'assess',
-      run: { produce: 'done', claims: 'redo' },
-      rec: { ph: 'produce', t: 'JOB DONE · round 2', k: 'job' },
-      prop: { as2: { version: 'v2' } },
-      say: 'br', to: 'as2', k: 'verdict', wire: 'scored: 14 pass · 1 held back',
-      log: '14 pass · the response-time claim is held back',
-      note: 'The claim still has no citation in the register, so its asset is ' +
-        'held back and the other fourteen go on. This is the run\'s open: line ' +
-        'being born.' },
-
-    { phase: 'legal — again', scene: 'approval',
-      run: { claims: 'done', legal: 'redo' },
-      rec: { ph: 'claims', t: 'DONE · 1 held back', k: 'done' },
+    { phase: '6. get sign-offs - again', scene: 'signoff',
+      run: { a6: 'redo' },
       prop: { as3: { version: 'v2' } },
-      say: 'lg', to: 'room', k: 'verdict', wire: 'APPROVED · 14 assets @v2',
-      log: 'approved · signed against v2',
-      note: 'The approval is signed against version 2 of the assets. If anything ' +
-        'changes after this, the approval is void and legal runs again — the ' +
-        'policy line with no minor-change path.' },
+      say: 'lg', to: 'room', k: 'verdict', wire: 'approved at v2',
+      log: 'legal signs against version 2',
+      note: 'Legal signs against version 2. If anything changes after this, ' +
+        'the approval no longer covers it.' },
 
-    { phase: 'schedule — system:', scene: 'sched', dur: 3800,
-      run: { legal: 'done', schedule: 'active' },
-      rec: { ph: 'legal', t: 'DONE · approval', k: 'done' },
-      lane: { community: { live: true } },
-      sys: 'scheduler: 14 assets queued · 4 channels',
-      log: '· system: the scheduler queues 14 assets',
-      note: 'Nobody collaborates in this phase. A system acts and leaves one ' +
-        'line saying what happened and when, which is the whole record. The ' +
-        'community line arms now: replies can arrive once posts are public.' },
+    { phase: '7. set up the practical side', scene: 'practical', dur: 3400,
+      run: { a6: 'done' },
+      rec: { ph: 'a6', t: 'approved · v2', k: 'done' },
+      sys: 'tracking links built · pixels live',
+      log: '· the practical side has been running since step 3',
+      note: 'This has been running alongside the creative work since the brief ' +
+        'went out: the tracking links, the landing page check, the ad ' +
+        'campaigns, the posting schedule.' },
 
-    { dur: 3000, sys: 'first post live · 2026-08-11 09:00',
-      phase: 'schedule — system:',
-      log: '· first post live 2026-08-11 09:00',
-      note: 'The posts go out on the calendar the plan named.' },
+    { dur: 2800, sys: 'ads configured · schedule loaded',
+      phase: '7. set up the practical side',
+      run: { a7: 'done' },
+      rec: { ph: 'a7', t: 'ready', k: 'sys' },
+      log: '· launch waits for both branches, and both are done',
+      note: 'Launch waits for both branches of the diagram, and both are now ' +
+        'done.' },
 
-    { phase: 'In flight', scene: 'flight', dur: 3600,
-      run: { schedule: 'done' },
-      rec: { ph: 'schedule', t: 'system: posted', k: 'sys' },
-      lane: { status: { chip: 'week 2 report' } },
-      log: '· no phase is active · the run-scoped lane keeps moving',
-      note: 'For fourteen days no phase is active, and the run is not idle: ' +
-        'the run-scoped lines are the only thing moving. The status line files ' +
-        'week 2.' },
+    { phase: '8. launch', scene: 'golive', dur: 3000,
+      run: { a8: 'active' },
+      sys: 'manager: clear to go',
+      log: '· a person says go',
+      note: 'A person says go. Nothing publishes until they do.' },
 
-    { phase: 'In flight', dur: 3400,
-      lane: { community: { chip: 'reply fielded · day 3' },
-              spend: { chip: 'pacing: on plan' } },
-      log: '· community fields a reply · spend reports on-plan pacing',
-      note: 'A reply arrives and the community line fields it. The spend line ' +
-        'reports pacing against the allocation. Neither of these belongs to any ' +
-        'phase, which is why the document carries them as run-scoped.' },
+    { dur: 2800, sys: 'posts publishing · ads running',
+      phase: '8. launch',
+      run: { a8: 'done' },
+      rec: { ph: 'a8', t: 'live', k: 'sys' },
+      log: '· the posts and the ads start together',
+      note: 'The scheduled posts go out and the paid campaigns start.' },
 
-    { phase: 'readout — runs collect-and-report', scene: 'car',
-      run: { readout: 'active' },
-      say: 'an', to: 'room', k: 'broadcast', wire: 'one question, every channel',
-      set: { c1: 'working', c2: 'working', c3: 'working' },
-      log: 'one question to every channel',
-      note: 'readout starts fourteen days after schedule — a clock, so the ' +
-        'after: line names a delay rather than a phase. It runs ' +
-        'collect-and-report: one question, every named reporter accounted for.' },
+    { phase: '9-11. the campaign is live', scene: 'live',
+      run: { a9: 'active', a10: 'active', a11: 'active' },
+      say: 'cm', to: 'mg', k: 'direct', wire: 'replies answered · 1 flagged',
+      log: 'comments and messages get answered',
+      note: 'Three activities run at once for as long as the campaign is live, ' +
+        'which is why the diagram draws them in one frame. The community ' +
+        'manager fields the replies and flags the one that needs the manager.' },
 
-    { dur: 3000, phase: 'readout — runs collect-and-report',
-      set: { c1: 'done', c2: 'done', c3: 'done' },
-      log: '· every channel answers · every line stays attributed',
-      note: 'The answers come back and every line of the report stays ' +
-        'attributed to the channel that reported it.' },
+    { say: 'mb', to: 'mg', k: 'pen', wire: 'budget moved to video',
+      phase: '9-11. the campaign is live',
+      rec: { ph: 'a11', t: 'ads rebalanced', k: 'done' },
+      log: 'the money follows what is working',
+      note: 'The numbers say video is winning, so the ad money follows it.' },
 
-    { say: 'an', to: 'room', k: 'pen', wire: 'the readout, delivered',
-      phase: 'readout — runs collect-and-report',
-      log: 'the readout, delivered',
-      note: 'The report ships on schedule. Its JOB DONE is the last phase ' +
-        'record of the run.' },
+    { phase: '5. produce the posts - a third time', scene: 'creative',
+      run: { a5: 'redo' },
+      prop: { as: { hidden: false, version: 'v2' } },
+      say: 'mg', to: 'ds', k: 'direct', wire: 'fresh statics, please',
+      set: { ds: 'working' },
+      log: 'the static images have gone stale',
+      note: 'The static images have gone stale from repetition. The second ' +
+        'dotted edge in the diagram fires: back to produce for replacements, ' +
+        'in the middle of the flight.' },
 
-    { phase: 'The lanes close', scene: 'close', dur: 4200,
-      run: { readout: 'done' },
-      rec: { ph: 'readout', t: 'JOB DONE', k: 'job' },
-      lane: { spend: { close: 'reconciled · lines matched' },
-              status: { close: true }, community: { close: true } },
-      log: '· spend reconciles · every run-scoped line closes',
-      note: 'The spend line reconciles even though nothing went wrong — the ' +
-        'books close because the run closes. A run is not complete until every ' +
-        'run-scoped line has closed too.' },
+    { say: 'ds', to: 'mg', k: 'pen', wire: 'statics v3',
+      phase: '5. produce the posts - a third time',
+      bump: { as: 'v3' }, set: { ds: 'done' },
+      run: { a5: 'done' },
+      rec: { ph: 'a5', t: 'posts v3', k: 'done' },
+      log: 'replacements go live mid-flight',
+      note: 'Replacements go live mid-flight. The column now shows produce ' +
+        'closing for the third time in one run.' },
 
-    { phase: 'RUN DONE', dur: 7000,
+    { phase: '12. wrap up', scene: 'wrap',
+      run: { a9: 'done', a10: 'done', a11: 'done', a12: 'active' },
+      rec: [{ ph: 'a9', t: 'tracked', k: 'done' },
+            { ph: 'a10', t: 'inbox clear', k: 'done' },
+            { ph: 'a11', t: 'spend on plan', k: 'done' }],
+      say: 'mg', to: 'ld', k: 'pen', wire: 'the report, against the brief',
+      log: 'ads off, numbers pulled, reported',
+      note: 'The window closes. The ads come off, the numbers come out of ' +
+        'every channel, and the report says how the campaign did against ' +
+        'what the brief asked for.' },
+
+    { phase: '13. record what was learned', scene: 'closeq', dur: 3200,
+      run: { a12: 'done', a13: 'active' },
+      rec: { ph: 'a12', t: 'reported', k: 'done' },
+      log: '· what to repeat, what to avoid, written down',
+      note: 'What to repeat and what to avoid gets written down while it is ' +
+        'still fresh.' },
+
+    { phase: 'The campaign is closed', dur: 6400,
+      run: { a13: 'done' },
+      rec: { ph: 'a13', t: 'learnings kept', k: 'done' },
       runDone: true,
-      log: '· RUN DONE: completed · one item stays open',
-      note: 'The closing record names the outcome, the result, and what stays ' +
-        'open: the response-time claim, sitting with Legal. Every record in the ' +
-        'column was written while the work happened, so nobody has to ' +
-        'reconstruct this run afterwards.' }
+      log: '· the campaign is closed',
+      note: 'The next campaign starts smarter, because this one wrote down ' +
+        'how it went.' }
   ]
 });

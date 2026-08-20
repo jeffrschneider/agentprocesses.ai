@@ -181,7 +181,7 @@
     this.runBox = run;
     this.runHead = html('div', 'ps-runhead', run);
     this.runHead.innerHTML = '<b>' + S.runLabel + '</b>' + (S.runMeta || '');
-    html('div', 'ps-col-h', run, 'phases');
+    html('div', 'ps-col-h', run, S.colHead || 'phases');
     this.phEls = {};
     S.phases.forEach(function (p) {
       var el = html('div', 'ps-ph', run);
