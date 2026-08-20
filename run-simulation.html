@@ -11,6 +11,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css">
   <link rel="stylesheet" href="sims/ps.css">
+  <style>
+    .mpan{ overflow-x:auto; border:1px solid var(--line); border-radius:12px;
+      background:var(--panel); padding:16px 12px; margin:22px 0 6px;
+      cursor:grab; scrollbar-width:thin; user-select:none; }
+    .mpan.dragging{ cursor:grabbing; }
+    .mpan pre.mermaid{ margin:0; width:max-content; background:transparent;
+      font-family:var(--wire); font-size:.75rem; color:var(--faint); }
+    .mpan svg{ display:block; }
+    .mpan-hint{ font-family:var(--wire); font-size:.68rem; color:var(--faint);
+      margin:8px 0 0; }
+  </style>
 </head>
 <body>
   <div class="layout">
@@ -18,6 +29,9 @@
     <aside class="rail">
       <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
       <nav>
+        <div class="grp">this page</div>
+        <a href="#process">/ the-phase-graph</a>
+        <a href="#simulation">/ the-simulation</a>
         <div class="grp">the library</div>
         <a href="/">/ overview</a>
         <a href="/#format">/ the-process-format</a>
@@ -51,6 +65,51 @@
           patterns the phases convene.</p>
       </div>
 
+      <section class="band" id="process">
+        <div class="wrap">
+          <p class="kicker">the phase graph</p>
+          <h2>The process this simulation runs</h2>
+          <p>Each box is a phase of the social campaign process, and each arrow is an
+            <code>after:</code> line, so the diagram reads left to right from the trigger to
+            the close. The legal phase is drawn in amber because it is marked
+            <code>never</code>: a person signs it no matter how automated the rest becomes.
+            The dashed boxes are the run-scoped lines, which follow the whole run instead of
+            any one phase. The dotted arrow out of legal is the failure edge the simulation
+            plays: a refused approval sends the run back to produce.</p>
+          <div class="mpan" id="mpan">
+            <pre class="mermaid">
+flowchart LR
+  T(["a campaign brief<br>is approved"]) --> D
+  D["<b>direction</b><br>convenes bake-off<br>supervised &middot; by 2 days"] --> P
+  P["<b>produce</b><br>runs build-by-talent<br>supervised &middot; by 5 days"] --> C
+  C["<b>claims</b><br>convenes assessment<br>autonomous &middot; by 1 day"] --> L
+  L["<b>legal</b><br>convenes approval<br>never &middot; by 1 day"] --> S
+  L -. "REDLINE &middot; back to produce" .-> P
+  S["<b>schedule</b><br>system: the scheduler<br>autonomous"] -- "+ 14 days" --> RD
+  RD["<b>readout</b><br>runs collect-and-report<br>autonomous"] --> DONE(["RUN DONE"])
+  subgraph RS["run-scoped &middot; live from a named point until the run closes"]
+    SP["spend<br>allocate-and-reconcile &middot; from trigger"]
+    ST["status<br>collect-and-report &middot; every 7 days"]
+    CM["community<br>human: field replies &middot; on a reply"]
+  end
+  D ~~~ SP
+  C ~~~ ST
+  RD ~~~ CM
+  classDef phase fill:#0F1D22,stroke:#6BA8FF,color:#E7EFEC;
+  classDef never fill:#151a14,stroke:#F2A93B,color:#E7EFEC;
+  classDef ends fill:#0b1220,stroke:#4A5D5A,color:#7C918C;
+  classDef lane fill:#0F1D22,stroke:#7C918C,stroke-dasharray:4 4,color:#E7EFEC;
+  class D,P,C,S,RD phase;
+  class L never;
+  class T,DONE ends;
+  class SP,ST,CM lane;
+            </pre>
+          </div>
+          <p class="mpan-hint">drag the diagram sideways, or scroll inside it, to see the
+            whole graph</p>
+        </div>
+      </section>
+
       <section class="band" id="simulation">
         <div class="wrap">
           <p>Watch what happens when legal refuses: the pointer climbs back up the column to
@@ -71,6 +130,49 @@
 
     </main>
   </div>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "base",
+    flowchart: { useMaxWidth: false, curve: "basis", nodeSpacing: 34, rankSpacing: 46 },
+    themeVariables: {
+      background: "#0F1D22",
+      primaryColor: "#0F1D22",
+      primaryBorderColor: "#6BA8FF",
+      primaryTextColor: "#E7EFEC",
+      lineColor: "#4A5D5A",
+      edgeLabelBackground: "#0A1417",
+      clusterBkg: "rgba(0,0,0,0.18)",
+      clusterBorder: "#1C2E33",
+      fontFamily: "'IBM Plex Mono', ui-monospace, monospace",
+      fontSize: "13px"
+    }
+  });
+</script>
+<script>
+// drag to pan the diagram
+(function () {
+  var box = document.getElementById("mpan");
+  if (!box) return;
+  var down = false, startX = 0, startLeft = 0;
+  box.addEventListener("pointerdown", function (e) {
+    down = true; startX = e.clientX; startLeft = box.scrollLeft;
+    box.classList.add("dragging");
+    box.setPointerCapture(e.pointerId);
+  });
+  box.addEventListener("pointermove", function (e) {
+    if (!down) return;
+    box.scrollLeft = startLeft - (e.clientX - startX);
+  });
+  ["pointerup", "pointercancel"].forEach(function (ev) {
+    box.addEventListener(ev, function () {
+      down = false;
+      box.classList.remove("dragging");
+    });
+  });
+})();
+</script>
 <script src="sims/ps-sim.js"></script>
 <script src="sims/scores/social-campaign-run.js"></script>
 <script>PSim.mountAll();</script>
