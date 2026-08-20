@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A simulation of one run · Agent Processes</title>
+  <meta name="description" content="One run of the social campaign process, played from start to finish: the document on the left, the inside of each phase on the right, and a failed legal review along the way.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="sims/ps.css">
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="rail">
+      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+      <nav>
+        <div class="grp">the library</div>
+        <a href="/">/ overview</a>
+        <a href="/#format">/ the-process-format</a>
+        <a href="/#catalog">/ the-catalog-format</a>
+        <div class="grp">worked examples</div>
+        <a href="social-campaign.html">/ social-campaign</a>
+        <a class="on" href="run-simulation.html">/ run-simulation</a>
+        <a href="marketing-catalog.html">/ marketing-catalog</a>
+        <div class="grp">reference</div>
+        <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">/ the-process-in-the-repo &#8599;</a>
+      </nav>
+      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
+    </aside>
+
+    <main class="main" id="top">
+
+      <div class="wrap hero">
+        <span class="eyebrow"><span class="tag">agent processes</span> &middot; a worked example</span>
+        <h1>A simulation of <span class="am">one run</span></h1>
+        <p class="lede">One run of the
+          <a href="social-campaign.html">social campaign process</a>, played from start to
+          finish. The left column is the process document doing its job: phases light up when
+          their <code>after:</code> lines are satisfied, every record lands under the phase
+          that produced it, and the run-scoped lane fires on its own clock while the pointer
+          is elsewhere. The right side shows the inside of whichever phase is active, drawn in
+          the same language as the simulations on
+          <a href="https://agentcollab.dev">agentcollab.dev</a> and
+          <a href="https://agentworkpatterns.com">agentworkpatterns.com</a>, which are the
+          patterns the phases convene.</p>
+      </div>
+
+      <section class="band" id="simulation">
+        <div class="wrap">
+          <p>Watch what happens when legal refuses: the pointer climbs back up the column to
+            <code>produce</code>, exactly as the process's failure edge says, and both rounds
+            stay in the record.</p>
+          <div class="ph" data-psim="social-campaign-run" style="min-height:420px"></div>
+          <p style="margin-top:22px">The process document this run followed, and the records it
+            left behind, are on <a href="social-campaign.html">the social campaign page</a>.</p>
+        </div>
+      </section>
+
+      <footer>
+        <div class="wrap">
+          <span>Agent Processes &middot; your work, written down</span>
+          <a href="https://github.com/jeffrschneider/agentprocesses">GitHub &#8599;</a>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+<script src="sims/ps-sim.js"></script>
+<script src="sims/scores/social-campaign-run.js"></script>
+<script>PSim.mountAll();</script>
+</body>
+</html>

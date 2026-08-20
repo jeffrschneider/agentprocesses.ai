@@ -178,6 +178,7 @@
     var body = html('div', 'acsim-body', this.host);
 
     var run = html('div', 'ps-run', body);
+    this.runBox = run;
     this.runHead = html('div', 'ps-runhead', run);
     this.runHead.innerHTML = '<b>' + S.runLabel + '</b>' + (S.runMeta || '');
     html('div', 'ps-col-h', run, 'phases');
@@ -553,12 +554,34 @@
     if (land) {
       while (this.gMsg.firstChild) this.gMsg.removeChild(this.gMsg.firstChild);
       this.flights = null;
-      this.paint(stateAt(S, this.i, true), null);
+      var st = stateAt(S, this.i, true);
+      this.paint(st, null);
+      this.followRun(st, step);
     } else {
-      this.paint(stateAt(S, this.i, false), step.say);
+      var st2 = stateAt(S, this.i, false);
+      this.paint(st2, step.say);
       this.spawnMsg(step);
       this.moveMsg(0);
+      this.followRun(st2, step);
     }
+  };
+
+  /* keep whatever just changed in the run column on screen */
+  Sim.prototype.followRun = function (st, step) {
+    var el = null, k;
+    if (st.runDone) el = this.runDoneEl;
+    if (!el && step.lane) {
+      var ids = Object.keys(step.lane);
+      if (ids.length) el = this.laneEls[ids[ids.length - 1]];
+    }
+    if (!el) for (k in this.phEls) {
+      if (st.phases[k] === 'active' || st.phases[k] === 'failed') el = this.phEls[k];
+    }
+    if (!el) el = this.runHead;
+    var box = this.runBox;
+    var top = box.scrollTop + (el.getBoundingClientRect().top -
+      box.getBoundingClientRect().top) - box.clientHeight * 0.3;
+    box.scrollTo ? box.scrollTo({ top: top, behavior: 'smooth' }) : (box.scrollTop = top);
   };
 
   Sim.prototype.land = function () {

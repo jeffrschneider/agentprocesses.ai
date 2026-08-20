@@ -6,11 +6,8 @@ PSim.register('social-campaign-run', {
   title: 'One run of the social campaign',
   shape: 'the simulation',
   hue: 'address',
-  blurb: 'The left column is the process document doing its job: phases light ' +
-    'up when their after: lines are satisfied, records land as they are ' +
-    'produced, and the run-scoped lane fires on its own clock. The right side ' +
-    'shows the inside of whichever phase is active, in the same language as ' +
-    'the simulations on agentcollab.dev and agentworkpatterns.com.',
+  blurb: 'The process document is on the left, the inside of the active phase ' +
+    'is on the right, and the records land as the run produces them.',
   doc: 'https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md',
   docLabel: 'read the process ↗',
 

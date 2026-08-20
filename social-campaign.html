@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css">
-  <link rel="stylesheet" href="sims/ps.css">
 </head>
 <body>
   <div class="layout">
@@ -21,13 +20,13 @@
         <div class="grp">this example</div>
         <a href="#document">/ the-document</a>
         <a href="#records">/ the-records</a>
-        <a href="#simulation">/ the-simulation</a>
         <div class="grp">the library</div>
         <a href="/">/ overview</a>
         <a href="/#format">/ the-process-format</a>
         <a href="/#catalog">/ the-catalog-format</a>
         <div class="grp">worked examples</div>
         <a class="on" href="social-campaign.html">/ social-campaign</a>
+        <a href="run-simulation.html">/ run-simulation</a>
         <a href="marketing-catalog.html">/ marketing-catalog</a>
         <div class="grp">reference</div>
         <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">/ this-example-in-the-repo &#8599;</a>
@@ -46,7 +45,7 @@
           document itself, the records one run left behind, and a simulation that plays that
           run from the trigger to the close.</p>
         <div class="cta">
-          <a class="btn btn-lead" href="#simulation">the simulation</a>
+          <a class="btn btn-lead" href="run-simulation.html">the simulation</a>
           <a class="btn btn-ghost" href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">this example in the repo &#8599;</a>
         </div>
       </div>
@@ -147,19 +146,8 @@ open: one asset held back - the claim about response times has no
         <div class="wrap">
           <p class="kicker">the simulation</p>
           <h2>A simulation of one run</h2>
-          <p>This plays one run of the process from start to finish - the same run whose
-            records appear above. The left column is the process document doing its job: phases light up when their
-            <code>after:</code> lines are satisfied, every record lands under the phase that
-            produced it, and the run-scoped lane fires on its own clock while the pointer is
-            elsewhere. The right side shows the inside of whichever phase is active &mdash;
-            the bake-off, the build, the assessments, the approval &mdash; drawn in the same
-            language as the simulations on <a href="https://agentcollab.dev">agentcollab.dev</a>
-            and <a href="https://agentworkpatterns.com">agentworkpatterns.com</a>, which are
-            the patterns the phases convene.</p>
-          <p>Watch what happens when legal refuses: the pointer climbs back up the column to
-            <code>produce</code>, exactly as the process's failure edge says, and both rounds
-            stay in the record.</p>
-          <div class="ph" data-psim="social-campaign-run" style="min-height:420px"></div>
+          <p>The run whose records appear above is played from start to finish, failed legal
+            review included, on <a href="run-simulation.html">its own page</a>.</p>
         </div>
       </section>
 
@@ -190,8 +178,5 @@ open: one asset held back - the claim about response times has no
   links.forEach((a) => a.addEventListener("click", () => setOn(a.getAttribute("href").slice(1))));
 })();
 </script>
-<script src="sims/ps-sim.js"></script>
-<script src="sims/scores/social-campaign-run.js"></script>
-<script>PSim.mountAll();</script>
 </body>
 </html>

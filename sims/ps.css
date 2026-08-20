@@ -54,13 +54,16 @@
 .acsim p.acsim-note{ max-width:78ch; margin:5px 0 0; color:var(--dim); }
 
 /* -- body: run column + stage ----------------------------------------- */
-.acsim-body{ display:grid; grid-template-columns:296px 1fr; align-items:stretch; }
-@container (max-width: 720px){ .acsim-body{ grid-template-columns:1fr; } }
+.acsim-body{ display:grid; grid-template-columns:296px 1fr; align-items:stretch;
+  height:460px; }
+@container (max-width: 720px){
+  .acsim-body{ grid-template-columns:1fr; height:auto; }
+  .ps-run{ max-height:280px; } }
 @container (max-width: 560px){
   .acsim-head{ padding:16px 20px 14px; }
   .acsim-doc{ position:static; display:inline-block; margin-top:12px; } }
 
-.acsim-stage{ position:relative; min-width:0; display:flex;
+.acsim-stage{ position:relative; min-width:0; min-height:0; display:flex;
   flex-direction:column; justify-content:center; }
 .acsim-stage svg{ display:block; width:100%; height:auto;
   background-image:
@@ -70,13 +73,14 @@
 
 /* -- the run column ---------------------------------------------------- */
 .ps-run{ border-right:1px solid var(--line); background:rgba(0,0,0,.16);
-  padding:12px 12px 14px; overflow-y:auto; scrollbar-width:thin; }
+  padding:11px 12px 13px; overflow-y:auto; scrollbar-width:thin; min-height:0;
+  scroll-behavior:smooth; }
 @container (max-width: 720px){
   .ps-run{ border-right:0; border-bottom:1px solid var(--line); } }
 
 .ps-runhead{ font-family:var(--wire); font-size:.63rem; line-height:1.5;
   color:var(--dim); border:1px solid var(--line); border-radius:8px;
-  padding:7px 10px; margin:0 0 10px; opacity:.25; transition:opacity .4s ease,
+  padding:6px 9px; margin:0 0 8px; opacity:.25; transition:opacity .4s ease,
   border-color .4s ease; }
 .ps-runhead b{ color:var(--paper); font-weight:600; display:block; }
 .ps-runhead.on{ opacity:1; border-color:var(--faint); }
@@ -85,7 +89,7 @@
   text-transform:uppercase; color:var(--faint); margin:0 0 6px 2px; }
 
 .ps-ph{ position:relative; border:1px solid var(--line); border-radius:8px;
-  padding:6px 9px 7px 12px; margin:0 0 6px; transition:border-color .35s ease,
+  padding:5px 8px 6px 11px; margin:0 0 5px; transition:border-color .35s ease,
   background .35s ease, opacity .35s ease; opacity:.55; }
 .ps-ph::before{ content:""; position:absolute; left:0; top:8px; bottom:8px;
   width:2.5px; border-radius:2px; background:var(--line);
@@ -123,9 +127,9 @@
 @keyframes ps-rec-in{ from{ opacity:0; transform:translateY(-3px); } }
 
 /* the run-scoped lane */
-.ps-lanes{ margin-top:11px; }
+.ps-lanes{ margin-top:9px; }
 .ps-lane{ position:relative; border:1px dashed var(--line); border-radius:8px;
-  padding:6px 9px 7px 12px; margin:0 0 6px; opacity:.5;
+  padding:5px 8px 6px 11px; margin:0 0 5px; opacity:.5;
   transition:opacity .35s ease, border-color .35s ease; }
 .ps-lane.live{ opacity:1; }
 .ps-lane.closed{ opacity:.75; border-style:solid; }
@@ -143,7 +147,7 @@
   margin-top:1px; }
 .ps-lane.pulse{ border-color:var(--hue,var(--address)); }
 
-.ps-rundone{ margin-top:11px; border:1px solid var(--verify); border-radius:8px;
+.ps-rundone{ margin-top:9px; border:1px solid var(--verify); border-radius:8px;
   padding:8px 10px; font-family:var(--wire); font-size:.62rem; line-height:1.55;
   color:var(--dim); opacity:0; transform:translateY(-3px);
   transition:opacity .45s ease, transform .45s ease; }
@@ -169,7 +173,7 @@
 @keyframes acsim-fade{ from{ opacity:0; } to{ opacity:1; } }
 
 /* -- caption ----------------------------------------------------------- */
-.acsim-cap{ padding:13px 20px; border-top:1px solid var(--line); min-height:84px; }
+.acsim-cap{ padding:12px 20px; border-top:1px solid var(--line); min-height:72px; }
 .acsim-phase{ font-family:var(--wire); font-size:.64rem; letter-spacing:.15em;
   text-transform:uppercase; color:var(--hue,var(--address)); }
 .acsim-note{ color:var(--dim); font-size:.85rem; margin:5px 0 0; max-width:88ch; }
@@ -198,7 +202,7 @@
 
 /* -- transcript: a strip along the bottom ------------------------------ */
 .acsim-log{ border-top:1px solid var(--line); background:rgba(0,0,0,.16); }
-.acsim-log-in{ max-height:150px; overflow-y:auto; padding:10px 0; scrollbar-width:thin; }
+.acsim-log-in{ max-height:110px; overflow-y:auto; padding:8px 0; scrollbar-width:thin; }
 .acsim-log-h{ font-family:var(--wire); font-size:.6rem; letter-spacing:.17em;
   text-transform:uppercase; color:var(--faint); padding:0 14px 8px; }
 .acsim-log-l{ font-family:var(--wire); font-size:.665rem; line-height:1.5;
