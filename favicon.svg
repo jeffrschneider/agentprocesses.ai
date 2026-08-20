@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Agent Processes">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6BA8FF"/>
+      <stop offset="1" stop-color="#43D6A6"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0A1417"/>
+  <g stroke="url(#g)" stroke-width="2.6" fill="none" stroke-linecap="round">
+    <path d="M18 32 L30 18"/>
+    <path d="M18 32 L30 32"/>
+    <path d="M18 32 L30 46"/>
+    <path d="M34 18 L46 32"/>
+    <path d="M34 32 L46 32"/>
+    <path d="M34 46 L46 32"/>
+  </g>
+  <g fill="#0A1417" stroke="url(#g)" stroke-width="2.6">
+    <circle cx="16" cy="32" r="4.4"/>
+    <circle cx="32" cy="18" r="4.4"/>
+    <circle cx="32" cy="32" r="4.4"/>
+    <circle cx="32" cy="46" r="4.4"/>
+  </g>
+  <circle cx="48" cy="32" r="5" fill="#6BA8FF"/>
+</svg>

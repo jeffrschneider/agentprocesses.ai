@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Processes: your organization's work, in a form agents can run</title>
+  <meta name="description" content="A format for writing down the processes an organization actually runs: a trigger, a graph of phases, an automation level per phase, bindings to systems and roles, policy gates, and an amendment history. Plus the catalog format for keeping ten to forty of them.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ══════════ THE WIRE : design token system (processes: blue lead) ══════════ */
+    :root{
+      --ink:#0A1417; --panel:#0F1D22; --line:#1C2E33;
+      --paper:#E7EFEC; --dim:#7C918C; --faint:#4A5D5A;
+      --signal:#F2A93B; --verify:#43D6A6; --address:#6BA8FF; --broadcast:#B69CFF;
+      --lead:var(--address);
+      --disp:'Space Grotesk', sans-serif;
+      --body:'IBM Plex Sans', system-ui, sans-serif;
+      --wire:'IBM Plex Mono', ui-monospace, monospace;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; }
+    html{ scroll-behavior:smooth; }
+    body{ background:var(--ink); color:var(--paper); font-family:var(--body);
+      font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size:64px 64px, 64px 64px;
+      background-position:-1px -1px;
+    }
+    body::before{
+      content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(80% 45% at 30% 0%, rgba(107,168,255,.10), transparent 60%),
+        radial-gradient(70% 50% at 100% 10%, rgba(67,214,166,.07), transparent 55%),
+        linear-gradient(180deg, rgba(10,20,23,.72), var(--ink) 62%);
+    }
+    a{ color:inherit; }
+
+    .layout{ position:relative; z-index:1; display:grid; grid-template-columns:248px 1fr; min-height:100vh; }
+    .rail{ border-right:1px solid var(--line); padding:26px 22px; position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; scrollbar-width:thin; }
+    .brand{ font-family:var(--wire); font-weight:600; font-size:.82rem; letter-spacing:.02em;
+      display:flex; align-items:center; gap:9px; color:var(--paper); text-decoration:none; margin-bottom:30px; }
+    .brand .dot{ width:9px; height:9px; border-radius:2px; background:var(--lead);
+      box-shadow:0 0 0 3px rgba(107,168,255,.15), 8px 0 0 -2px var(--verify), 16px 0 0 -2px var(--signal); }
+    .rail .grp{ font-family:var(--wire); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--faint); margin:16px 0 4px; }
+    .rail .grp:first-child{ margin-top:0; }
+    .rail nav a{ display:block; font-family:var(--wire); font-size:.8rem; color:var(--dim);
+      text-decoration:none; padding:6px 0; border-left:2px solid transparent; padding-left:12px; margin-left:-12px; }
+    .rail nav a:hover{ color:var(--paper); }
+    .rail nav a.on{ color:var(--paper); border-left-color:var(--lead); }
+    .rail .foot{ margin-top:26px; padding-top:18px; border-top:1px solid var(--line);
+      font-family:var(--wire); font-size:.72rem; color:var(--faint); }
+
+    .main{ min-width:0; }
+    .wrap{ max-width:980px; margin:0 auto; padding:0 40px; }
+
+    .eyebrow{ font-family:var(--wire); font-size:.76rem; letter-spacing:.04em; color:var(--dim); }
+    .eyebrow .tag{ color:var(--lead); }
+    h1,h2,h3{ font-family:var(--disp); font-weight:700; letter-spacing:-.02em; line-height:1.08; }
+    .lede{ color:var(--dim); font-size:1.12rem; max-width:60ch; }
+
+    .hero{ padding:74px 0 42px; border-bottom:1px solid var(--line); }
+    .hero .eyebrow{ margin-bottom:22px; display:block; }
+    .hero h1{ font-size:clamp(2.2rem,4.6vw,3.2rem); margin:0 0 18px; }
+    .hero h1 .am{ color:var(--lead); }
+
+    section.band{ padding:56px 0; border-bottom:1px solid var(--line); }
+    section.band h2{ font-size:1.8rem; margin:0 0 14px; }
+    section.band h3{ font-size:1.15rem; margin:38px 0 10px; }
+    section.band p{ color:var(--dim); max-width:66ch; }
+    section.band p b, section.band li b{ color:var(--paper); font-weight:600; }
+    .kicker{ font-family:var(--wire); font-size:.74rem; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--faint); margin:0 0 16px; }
+
+    ul.plain{ margin:18px 0 0; padding-left:20px; color:var(--dim); max-width:70ch; }
+    ul.plain li{ margin:10px 0; }
+    ul.plain b{ color:var(--paper); font-weight:600; }
+
+    .callout{ border:1px solid var(--line); border-left:3px solid var(--lead); border-radius:10px;
+      background:var(--panel); padding:14px 18px; margin:22px 0; max-width:70ch; }
+    .callout.violet{ border-left-color:var(--broadcast); }
+    .callout .t{ font-family:var(--wire); font-size:.74rem; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--faint); margin-bottom:6px; }
+    .callout p{ margin:6px 0 0; color:var(--dim); }
+    .callout p:first-of-type{ margin-top:0; }
+    .callout p b{ color:var(--paper); }
+
+    pre.code{ background:#0b1220; border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+      overflow-x:auto; font-family:var(--wire); font-size:.82rem; line-height:1.7; color:var(--paper); margin:20px 0; }
+    pre.code .c{ color:var(--faint); }
+    pre.code .k{ color:var(--lead); }
+
+    /* process maps */
+    .pmap{ display:block; width:100%; height:auto; margin:22px 0 6px; color:var(--faint); }
+    .pn rect{ fill:rgba(255,255,255,.025); stroke:var(--c); stroke-width:1.2; }
+    .pn-n{ font-family:var(--wire); font-size:11px; fill:var(--paper); }
+    .pn-s{ font-family:var(--wire); font-size:8.4px; fill:var(--c); }
+    .pn-a{ font-family:var(--wire); font-size:8.4px; fill:var(--faint); text-anchor:end; }
+    .pe{ fill:none; stroke:var(--line); stroke-width:1.4; }
+    .pe.dash{ stroke-dasharray:4 4; }
+    .pe-l{ font-family:var(--wire); font-size:8.4px; fill:var(--faint); text-anchor:middle; }
+    .cn rect{ fill:rgba(255,255,255,.025); stroke:var(--c); stroke-width:1.2; }
+    .cn-n{ font-family:var(--wire); font-size:10.5px; fill:var(--paper); }
+    .cn-f{ font-family:var(--wire); font-size:10px; fill:var(--signal); text-anchor:end; }
+    .legend{ display:flex; gap:18px; flex-wrap:wrap; font-family:var(--wire); font-size:.72rem;
+      color:var(--faint); margin:2px 0 0; }
+    .legend i{ width:9px; height:9px; border-radius:2px; display:inline-block; margin-right:7px; vertical-align:0; }
+
+    .scroll{ overflow-x:auto; }
+    table.tbl{ width:100%; border-collapse:collapse; margin:20px 0; font-size:.86rem; }
+    table.tbl th{ text-align:left; font-family:var(--wire); font-size:.68rem; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--faint); border-bottom:1px solid var(--line);
+      padding:8px 14px 8px 0; font-weight:500; white-space:nowrap; }
+    table.tbl td{ border-bottom:1px solid var(--line); padding:10px 14px 10px 0; color:var(--dim); vertical-align:top; }
+    table.tbl td b{ color:var(--paper); font-weight:600; }
+    table.tbl td.mono, table.tbl td code{ font-family:var(--wire); font-size:.82rem; color:var(--paper); }
+
+    .cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:26px; }
+    .btn{ font-family:var(--wire); font-size:.86rem; font-weight:500; text-decoration:none;
+      padding:12px 20px; border-radius:8px; border:1px solid transparent; display:inline-flex; align-items:center; gap:8px;
+      transition:transform .16s ease, box-shadow .2s ease, border-color .2s ease; }
+    .btn-lead{ background:var(--lead); color:#08172b; font-weight:600;
+      box-shadow:0 12px 30px -14px rgba(107,168,255,.8); }
+    .btn-lead:hover{ transform:translateY(-2px); }
+    .btn-ghost{ border-color:var(--line); color:var(--paper); background:rgba(255,255,255,.02); }
+    .btn-ghost:hover{ border-color:var(--dim); transform:translateY(-2px); }
+
+    footer{ padding:34px 0 60px; }
+    footer .wrap{ font-family:var(--wire); font-size:.78rem; color:var(--faint); display:flex; gap:14px; flex-wrap:wrap; }
+    footer a{ color:var(--dim); text-decoration:none; }
+
+    @media (max-width:900px){
+      .layout{ grid-template-columns:1fr; }
+      .rail{ position:static; height:auto; border-right:0; border-bottom:1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="rail">
+      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+      <nav>
+        <div class="grp">learn</div>
+        <a class="on" href="#top">/ overview</a>
+        <a href="#where">/ where-it-sits</a>
+        <a href="#graph">/ a-process-is-a-graph</a>
+        <a href="#automation">/ automation</a>
+        <div class="grp">the formats</div>
+        <a href="#format">/ the-process</a>
+        <a href="#catalog">/ the-catalog</a>
+        <div class="grp">worked example</div>
+        <a href="#example">/ one-process</a>
+        <a href="#department">/ one-department</a>
+        <div class="grp">reference</div>
+        <a href="https://github.com/jeffrschneider/agentprocesses">/ the-repo &#8599;</a>
+      </nav>
+      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
+    </aside>
+
+    <main class="main" id="top">
+
+      <div class="wrap hero">
+        <span class="eyebrow"><span class="tag">agent processes</span> &middot; your work, in a form agents can run</span>
+        <h1>The work your organization<br>actually does, <span class="am">written down</span></h1>
+        <p class="lede">A process says what starts a piece of recurring work, who owns it, what
+          order its phases run in, which of them agents may run alone, and what a run has to
+          leave behind. A catalog is all of them together, which is how a department finds out
+          what it really does and where automation is worth paying for.</p>
+        <div class="cta">
+          <a class="btn btn-lead" href="#format">the process format</a>
+          <a class="btn btn-ghost" href="https://github.com/jeffrschneider/agentprocesses">the repo &#8599;</a>
+        </div>
+      </div>
+
+      <section class="band" id="where">
+        <div class="wrap">
+          <p class="kicker">where this sits</p>
+          <h2>Three libraries, and each one names the one below it</h2>
+          <p><a href="https://agentcollab.dev">Agent Collab</a> covers what happens inside one
+            room: who may speak, who holds the pen, and what the record is.
+            <a href="https://agentworkpatterns.com">Agent Work Patterns</a> covers the shape of
+            a whole job: the phases, what crosses between them, and what happens when a phase
+            fails. Its patterns are reusable, and they belong to nobody.</p>
+          <p>This library covers your organization's own work. A process names work patterns
+            and collaboration patterns for its phases, and adds what only you can supply: your
+            trigger, your systems, your legal gate, your owner. The dependency points one way,
+            as it does everywhere else in the family: processes cite patterns, and no pattern
+            knows this library exists.</p>
+
+          <h3>Why a process is not a work pattern</h3>
+          <p>A work pattern is generic. Train and certify is the same shape at your company and
+            at your competitor, which is why there are only a few of them and why one earns its
+            place by recurring across organizations.</p>
+          <p>A process is yours. It has your brand rules in it, your compliance gate, your
+            systems, and a person's name on it. A department has ten to forty, and that is the
+            normal number. Forty work patterns would not be.</p>
+          <p>The other difference is lifetime. A work pattern is a shape you reach for. A
+            process is a standing document that gets amended a few times a year, runs hundreds
+            of times, and outlives everyone who wrote it. That is why it carries a version, an
+            owner, an effective date and an amendment history, and why every run records which
+            version it ran under.</p>
+          <div class="callout">
+            <div class="t">the definition and the instance</div>
+            <p>A <b>process</b> is the document. A <b>run</b> is one execution of it. Both need
+              records, and keeping them apart is what lets an auditor read a run from last March
+              against the version that was in force in March rather than against today's page.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="graph">
+        <div class="wrap">
+          <p class="kicker">a process is a graph</p>
+          <h2>Phases are named, not numbered</h2>
+          <p>Numbering implies a sequence, and real work is not a sequence. When somebody is
+            terminated, access revocation, final pay and equipment return all start at once and
+            none of them waits for the others. Order comes from <code>after:</code> lines, so
+            two phases with no path between them run at the same time, and the phase that closes
+            the run waits for all of them.</p>
+
+          <svg class="pmap" viewBox="0 0 680 300" role="img" aria-label="an offboarding process drawn as a graph: three branches from one trigger, joining at close-out">
+      <defs><marker id="pah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+      <path class="pe" d="M110 148 C138 148 140 46 168 46" marker-end="url(#pah)"/>
+      <path class="pe" d="M110 148 C138 148 140 148 168 148" marker-end="url(#pah)"/>
+      <path class="pe" d="M110 148 C138 148 140 250 168 250" marker-end="url(#pah)"/>
+      <path class="pe" d="M300 46 C328 46 322 46 350 46" marker-end="url(#pah)"/>
+      <path class="pe" d="M500 46 C528 46 492 148 520 148" marker-end="url(#pah)"/>
+      <path class="pe" d="M300 148 C399 148 421 148 520 148" marker-end="url(#pah)"/>
+      <path class="pe" d="M300 250 C399 250 421 148 520 148" marker-end="url(#pah)"/>
+      <g class="pn" style="--c:var(--dim)">
+      <rect x="14" y="128" width="96" height="40" rx="8"/>
+      <text class="pn-n" x="26" y="147">trigger</text>
+      <text class="pn-s" x="26" y="161">HR posts it</text>
+      </g>
+      <g class="pn" style="--c:var(--verify)">
+      <rect x="168" y="24" width="132" height="44" rx="8"/>
+      <text class="pn-n" x="180" y="43">revoke-access</text>
+      <text class="pn-s" x="180" y="57">convenes briefing</text>
+      <text class="pn-a" x="288" y="43">1h</text>
+      </g>
+      <g class="pn" style="--c:var(--address)">
+      <rect x="168" y="126" width="132" height="44" rx="8"/>
+      <text class="pn-n" x="180" y="145">final-pay</text>
+      <text class="pn-s" x="180" y="159">system: the payroll run</text>
+      <text class="pn-a" x="288" y="145">3d</text>
+      </g>
+      <g class="pn" style="--c:var(--broadcast)">
+      <rect x="168" y="228" width="132" height="44" rx="8"/>
+      <text class="pn-n" x="180" y="247">equipment</text>
+      <text class="pn-s" x="180" y="261">human: collect it</text>
+      <text class="pn-a" x="288" y="247">10d</text>
+      </g>
+      <g class="pn" style="--c:var(--signal)">
+      <rect x="350" y="24" width="150" height="44" rx="8"/>
+      <text class="pn-n" x="362" y="43">handover</text>
+      <text class="pn-s" x="362" y="57">runs divide-and-integrate</text>
+      <text class="pn-a" x="488" y="43">5d</text>
+      </g>
+      <g class="pn" style="--c:var(--verify)">
+      <rect x="520" y="126" width="146" height="44" rx="8"/>
+      <text class="pn-n" x="532" y="145">close-out</text>
+      <text class="pn-s" x="532" y="159">convenes approval</text>
+      </g>
+    </svg>
+          <div class="legend">
+            <span><i style="background:var(--verify)"></i>convenes a collab pattern</span>
+            <span><i style="background:var(--signal)"></i>runs a work pattern</span>
+            <span><i style="background:var(--address)"></i>a system acts</span>
+            <span><i style="background:var(--broadcast)"></i>a person acts</span>
+          </div>
+
+          <p>A phase resolves to exactly one of four things, and naming all four is what lets a
+            real process be written down rather than approximated:</p>
+          <ul class="plain">
+            <li><b>runs a work pattern</b> &mdash; the phase is a whole sub-job with its own plan
+              and its own close. The process names what comes out and never reaches inside.</li>
+            <li><b>convenes a collab pattern</b> &mdash; the phase is one room, running an Agent
+              Collab playbook as written.</li>
+            <li><b>a system acts</b> &mdash; nothing collaborates. A scheduler publishes, a job
+              runs, a record is written.</li>
+            <li><b>a person acts</b> &mdash; somebody does something outside any room.</li>
+          </ul>
+          <p>The last two are why a business process cannot be written with work patterns alone.
+            Most real processes have steps where no agents collaborate at all, and a format that
+            cannot express them forces people to write down something other than what happens.</p>
+          <p><code>by:</code> carries the deadline, and it belongs to the process rather than to
+            any one run, because a deadline is usually policy: payroll has a legal one and an
+            access revocation has a security one.</p>
+        </div>
+      </section>
+
+      <section class="band" id="automation">
+        <div class="wrap">
+          <p class="kicker">automation</p>
+          <h2>One phase at a time, and one of them never moves</h2>
+          <p>Every phase carries an automation level. This is the column an organization actually
+            uses to decide where to start, and the one that changes as confidence grows.</p>
+          <div class="scroll">
+            <table class="tbl">
+              <thead><tr><th>level</th><th>who does the work</th><th>who decides</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">manual</td><td>people</td><td>people</td></tr>
+                <tr><td class="mono">assisted</td><td>an agent drafts or gathers</td><td>a person decides and acts</td></tr>
+                <tr><td class="mono">supervised</td><td>an agent</td><td>a person approves the output before it moves on</td></tr>
+                <tr><td class="mono">autonomous</td><td>an agent</td><td>nobody in the loop; the record is the check</td></tr>
+                <tr><td class="mono">never</td><td>people, permanently</td><td>people</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Four of those are rungs on a ladder. <b>Never is not a rung</b>: it is a decision
+            that a phase stays with a person however good the agents get, because a regulator, a
+            contract or a customer relationship requires it. Keeping it separate stops an
+            automation program from quietly climbing over a gate that was put there on purpose.</p>
+          <p>Moving a phase up the ladder is an amendment, with a version and a date. That is
+            deliberate. If somebody asks when a machine started deciding whether a claim was
+            substantiated, the answer should be a version number and the runs on either side of
+            it, not a recollection.</p>
+        </div>
+      </section>
+
+      <section class="band" id="format">
+        <div class="wrap">
+          <p class="kicker">the format</p>
+          <h2>One process, on one page</h2>
+          <p>Every process uses these headings, so a reader who knows one can read all forty:</p>
+          <pre class="code"><span class="c"># the shape of every process document</span>
+PROCESS: &lt;name&gt;                     id: &lt;team&gt;/&lt;slug&gt;   v&lt;version&gt;
+owner: &lt;who owns this document&gt;     effective: &lt;date&gt;
+trigger: &lt;what starts a run, and who may start one&gt;
+concurrency: &lt;one run at a time | runs may overlap&gt;
+goal: &lt;what exists when a run is done&gt;
+phases:
+  &lt;name&gt; - &lt;runs|convenes|system:|human:&gt; &lt;what&gt;   owner: &lt;who&gt;
+           after: &lt;phase names, or trigger&gt;        by: &lt;deadline&gt;
+           automation: &lt;manual|assisted|supervised|autonomous|never&gt;
+handoffs:
+  &lt;phase&gt; -&gt; &lt;phase&gt;: &lt;what crosses, and what it has to contain&gt;
+bindings:
+  roster:  &lt;role = agent or person, standing&gt;
+  systems: &lt;system (read|write), ...&gt;
+  data:    &lt;reference material a run reads&gt;
+policy:
+  &lt;a rule that exists for legal, compliance, or brand reasons&gt;
+measures:
+  &lt;what a good run looks like: cycle time, volume, quality gate&gt;
+fed by: &lt;process ids&gt;
+feeds:  &lt;process ids&gt;
+amendments:
+  v&lt;n&gt; - &lt;what changed, and which debrief or run produced it&gt;</pre>
+          <p><b>Bindings</b> are what make a process executable rather than merely described:
+            which agent or person holds each role between runs, what a run may touch and at what
+            permission, and the reference data it reads. They are also the pre-authorization.
+            When a trigger fires, nobody should be deciding what the agents are allowed to do.</p>
+          <p><b>Policy</b> is separate from coordination on purpose. "One agent holds the pen
+            during synthesis" is coordination, it lives in the pattern, and it applies wherever
+            the pattern is used. "No claim ships without a citation in the claims register" is
+            policy, it is yours, and it applies here.</p>
+          <p>The full format, including the process-level failure edges &mdash; a missed
+            deadline, a refused gate, a trigger that fires while a run is in flight, a run
+            abandoned after it has already changed the world &mdash; is in
+            <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/process.md">process.md</a>.</p>
+        </div>
+      </section>
+
+      <section class="band" id="catalog">
+        <div class="wrap">
+          <p class="kicker">the catalog</p>
+          <h2>Forty documents nobody can hold in their head</h2>
+          <p>A department that writes down one process has a document. A department that writes
+            down forty has a problem: nobody knows which ones matter most, and nobody notices
+            when one of them stops being true. The catalog is one row per process, and every
+            field in the row comes from that process document's header.</p>
+          <p>That last point is the rule that keeps it alive. The catalog is a projection, never
+            a second source of truth. When the two disagree, the process document is right and
+            the row is stale, and nobody is maintaining the same fact in two places.</p>
+          <p>The automation column reports the <b>floor, not the average</b>. A process is only
+            as automated as its least automated required phase, so one that has four autonomous
+            phases and one legal gate is not an automated process. A catalog that averages will
+            flatter you.</p>
+          <h3>Coverage and upkeep</h3>
+          <ul class="plain">
+            <li><b>What is not in the catalog does not exist.</b> Work that happens outside it
+              cannot be automated, measured, or handed over when somebody leaves. Finding
+              uncatalogued work is the point of the exercise, not an embarrassment.</li>
+            <li><b>A process with no owner is a finding, not a row.</b> Either somebody takes it
+              or it is retired.</li>
+            <li><b>A process that has not run in a year is retired, not documented.</b> Keeping
+              dead processes in the catalog is how a catalog stops being read.</li>
+          </ul>
+          <p>How to build one, how ids survive renames and splits, and how to rank what to
+            automate first are in
+            <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/process-catalog.md">process-catalog.md</a>.</p>
+        </div>
+      </section>
+
+      <section class="band" id="example">
+        <div class="wrap">
+          <p class="kicker">one process, in full</p>
+          <h2>The social campaign process</h2>
+          <p>One row of a marketing department's catalog, with every line answered. Note the
+            phase that says <code>never</code>, and what the amendment history records about the
+            phase above it.</p>
+          <pre class="code">PROCESS: social campaign              id: mkt/social-campaign   v4
+owner: Head of Social                 effective: 2026-06-01
+trigger: a campaign brief is approved in mkt/campaign-planning
+concurrency: runs may overlap - up to six live at once, one per campaign
+goal: a legally cleared campaign scheduled on every channel the brief
+      names, and a readout of how it did
+phases:
+  direction - runs evaluate-options          owner: Head of Social
+              after: trigger                 by: 2 days
+              automation: supervised
+  produce   - runs build-by-talent           owner: Creative Lead
+              after: direction               by: 5 days
+              automation: supervised
+  claims    - convenes assessment            owner: Brand agent
+              after: produce                 by: 1 day
+              automation: autonomous
+  legal     - convenes approval              owner: Legal reviewer
+              after: claims                  by: 1 day
+              <span class="k">automation: never</span>
+  schedule  - system: the scheduler          owner: Social agent
+              after: legal
+              automation: autonomous
+  readout   - runs collect-and-report        owner: Analytics agent
+              after: schedule + 14 days
+              automation: autonomous
+policy:
+  no claim ships without a citation in the claims register
+  legal approval is a human gate and is never delegated to an agent
+  an asset changed after approval goes back through legal. There is no
+    minor-change path
+amendments:
+  v2 - claims moved out of legal into its own phase, so legal reviews
+       the exceptions rather than every asset (debrief, run 12)
+  v3 - claims raised from supervised to autonomous after twenty clean
+       runs (debrief, run 31)
+  v4 - readout moved from 7 days to 14. A week was too early to see
+       anything on the slower channels (debrief, run 38)</pre>
+          <p>Version 2 is the interesting one. Legal used to read every asset and had become the
+            bottleneck for a process that runs forty times a quarter, so the claims check moved
+            into its own phase and legal now sees the exceptions. The gate did not move; the
+            queue in front of it did.</p>
+
+          <h3>What a run leaves behind</h3>
+          <p>Each phase leaves the record its own level produces. A phase that convenes a collab
+            pattern leaves that pattern's CONVENED and DONE records; a phase that runs a work
+            pattern leaves its plan and its JOB DONE; a system phase leaves one line saying what
+            happened and when. The run opens and closes around them:</p>
+          <pre class="code">RUN: mkt/social-campaign v4 &middot; run 47
+started: 2026-08-03 by Head of Social
+trigger: campaign brief CB-118, approved in mkt/campaign-planning run 9
+
+RUN DONE: mkt/social-campaign v4 &middot; run 47
+outcome: completed
+result: 14 assets live across 4 channels, scheduled 2026-08-11
+open: one asset held back - the claim about response times has no
+      citation, and the claims register entry is with Legal</pre>
+          <p>Read from the bottom up, that chain answers the three questions an auditor asks.
+            What is your process: the document. Did it run: the run records. Can you show me:
+            every record names who acted and when, and none of them was written afterwards from
+            memory.</p>
+        </div>
+      </section>
+
+      <section class="band" id="department">
+        <div class="wrap">
+          <p class="kicker">one department</p>
+          <h2>Eleven processes, and where this department would start</h2>
+          <p>The dependency graph is the main reason to keep a catalog. The number on a box is how
+            many processes wait on it across the whole catalog; the eight busiest are drawn
+            here.</p>
+
+          <svg class="pmap" viewBox="0 0 680 300" role="img" aria-label="the marketing catalog dependency graph: the competitor review and the claims register feed most of it">
+      <defs><marker id="pah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+      <path class="pe" d="M164 47 C203 47 211 47 250 47" marker-end="url(#pah2)"/>
+      <path class="pe" d="M164 47 C203 47 211 117 250 117" marker-end="url(#pah2)"/>
+      <path class="pe" d="M164 47 C203 47 211 187 250 187" marker-end="url(#pah2)"/>
+      <path class="pe" d="M164 47 C203 47 211 257 250 257" marker-end="url(#pah2)"/>
+      <path class="pe" d="M164 47 C315 47 349 147 500 147" marker-end="url(#pah2)"/>
+      <path class="pe" d="M164 135 C203 135 211 117 250 117" marker-end="url(#pah2)"/>
+      <path class="pe" d="M164 135 C203 135 211 187 250 187" marker-end="url(#pah2)"/>
+      <path class="pe" d="M164 135 C203 135 211 257 250 257" marker-end="url(#pah2)"/>
+      <path class="pe" d="M400 47 C428 47 222 117 250 117" marker-end="url(#pah2)"/>
+      <path class="pe" d="M400 47 C428 47 222 187 250 187" marker-end="url(#pah2)"/>
+      <path class="pe" d="M164 223 C315 223 349 147 500 147" marker-end="url(#pah2)"/>
+      <path class="pe" d="M400 117 C445 117 455 147 500 147" marker-end="url(#pah2)"/>
+      <path class="pe" d="M400 187 C445 187 455 147 500 147" marker-end="url(#pah2)"/>
+      <g class="cn" style="--c:var(--signal)"><rect x="14" y="30" width="150" height="34" rx="7"/><text class="cn-n" x="25" y="51">competitor-review</text><text class="cn-f" x="153" y="51">6</text></g>
+      <g class="cn" style="--c:var(--signal)"><rect x="14" y="118" width="150" height="34" rx="7"/><text class="cn-n" x="25" y="139">claims-register</text><text class="cn-f" x="153" y="139">3</text></g>
+      <g class="cn" style="--c:var(--dim)"><rect x="14" y="206" width="150" height="34" rx="7"/><text class="cn-n" x="25" y="227">lead-routing</text><text class="cn-f" x="153" y="227">1</text></g>
+      <g class="cn" style="--c:var(--signal)"><rect x="250" y="30" width="150" height="34" rx="7"/><text class="cn-n" x="261" y="51">campaign-planning</text><text class="cn-f" x="389" y="51">3</text></g>
+      <g class="cn" style="--c:var(--dim)"><rect x="250" y="100" width="150" height="34" rx="7"/><text class="cn-n" x="261" y="121">social-campaign</text><text class="cn-f" x="389" y="121">1</text></g>
+      <g class="cn" style="--c:var(--dim)"><rect x="250" y="170" width="150" height="34" rx="7"/><text class="cn-n" x="261" y="191">email-campaign</text><text class="cn-f" x="389" y="191">1</text></g>
+      <g class="cn" style="--c:var(--dim)"><rect x="250" y="240" width="150" height="34" rx="7"/><text class="cn-n" x="261" y="261">website-update</text></g>
+      <g class="cn" style="--c:var(--dim)"><rect x="500" y="130" width="150" height="34" rx="7"/><text class="cn-n" x="511" y="151">quarterly-readout</text></g>
+    </svg>
+
+          <p><b>Two processes are load-bearing and neither is high volume.</b> The competitor
+            review feeds six others and runs sixteen times a year. The claims register feeds
+            three of the four processes that put words in front of a customer, and runs ten
+            times a quarter. Ranked by volume alone, both would be near the bottom of an
+            automation list, and both are the wrong things to leave until last.</p>
+          <p><b>The volume is somewhere else entirely.</b> Inbound lead routing runs four hundred
+            times a week, more than everything else combined, and is already autonomous. That is
+            usually what happens to the highest-volume process whether or not anyone planned it.</p>
+          <p><b>Two processes are gated by one person.</b> Social and email campaigns both report
+            <code>never</code>, and in both cases it is the same legal approval, held by the same
+            reviewer: one seat in the path of sixty runs a quarter. Nothing in the catalog can
+            automate that away, but knowing it is there changes what you would fix. Not the
+            automation level, the staffing.</p>
+          <p>The full catalog, the eleven rows, and what the department's first pass got wrong
+            are in
+            <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/marketing-catalog.md">the worked example</a>.</p>
+        </div>
+      </section>
+
+      <footer>
+        <div class="wrap">
+          <span>Agent Processes &middot; your work, written down</span>
+          <a href="https://github.com/jeffrschneider/agentprocesses">GitHub &#8599;</a>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+<script>
+// The rail marker follows the section in view.
+(() => {
+  const links = [...document.querySelectorAll('.rail nav a[href^="#"]')];
+  const byId = Object.fromEntries(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const targets = Object.keys(byId).map((id) => document.getElementById(id)).filter(Boolean);
+  function setOn(id) {
+    links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + id));
+  }
+  const io = new IntersectionObserver((entries) => {
+    const visible = entries.filter((e) => e.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (visible.length) setOn(visible[0].target.id);
+  }, { rootMargin: "-20% 0px -60% 0px" });
+  targets.forEach((t) => io.observe(t));
+  links.forEach((a) => a.addEventListener("click", () => setOn(a.getAttribute("href").slice(1))));
+})();
+</script>
+</body>
+</html>
