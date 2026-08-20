@@ -67,42 +67,48 @@
 
       <section class="band" id="process">
         <div class="wrap">
-          <p class="kicker">the phase graph</p>
-          <h2>The process this simulation runs</h2>
-          <p>Each box is a phase of the social campaign process, and each arrow is an
-            <code>after:</code> line, so the diagram reads left to right from the trigger to
-            the close. The legal phase is drawn in amber because it is marked
-            <code>never</code>: a person signs it no matter how automated the rest becomes.
-            The dashed boxes are the run-scoped lines, which follow the whole run instead of
-            any one phase. The dotted arrow out of legal is the failure edge the simulation
-            plays: a refused approval sends the run back to produce.</p>
+          <p class="kicker">the process</p>
+          <h2>How a social campaign gets made</h2>
+          <p>Each box is one activity: its name, what happens in it, and who does it. The
+            arrows show what waits on what. Once the parameters are set, producing the posts
+            and setting up the practical side run at the same time, and both have to finish
+            before launch. The amber box is where people sign off, and the dotted arrows
+            point backwards: a sign-off can send work back for changes, and an ad that has
+            gone stale sends the team back to produce new assets. The dashed frame holds the
+            work that keeps going for as long as the campaign is live.</p>
           <div class="mpan" id="mpan">
             <pre class="mermaid">
 flowchart LR
-  T(["a campaign brief<br>is approved"]) --> D
-  D["<b>direction</b><br>convenes bake-off<br>supervised &middot; by 2 days"] --> P
-  P["<b>produce</b><br>runs build-by-talent<br>supervised &middot; by 5 days"] --> C
-  C["<b>claims</b><br>convenes assessment<br>autonomous &middot; by 1 day"] --> L
-  L["<b>legal</b><br>convenes approval<br>never &middot; by 1 day"] --> S
-  L -. "REDLINE &middot; back to produce" .-> P
-  S["<b>schedule</b><br>system: the scheduler<br>autonomous"] -- "+ 14 days" --> RD
-  RD["<b>readout</b><br>runs collect-and-report<br>autonomous"] --> DONE(["RUN DONE"])
-  subgraph RS["run-scoped &middot; live from a named point until the run closes"]
-    SP["spend<br>allocate-and-reconcile &middot; from trigger"]
-    ST["status<br>collect-and-report &middot; every 7 days"]
-    CM["community<br>human: field replies &middot; on a reply"]
+  T(["a campaign brief arrives"]) --> IN
+  IN["<b>take in the brief</b><br>work out what it must accomplish<br>manager"] --> PAR
+  PAR["<b>set the parameters</b><br>platforms, audience, dates, budget<br>manager &middot; leadership on budget"] --> CRB
+  PAR --> PRC
+  CRB["<b>brief the creatives</b><br>say what is needed and by when<br>manager &middot; creative team"] --> DIR
+  DIR["<b>settle on a direction</b><br>weigh concepts until one is worth backing<br>manager &middot; creative team"] --> PRO
+  PRO["<b>produce the posts</b><br>copy, images, video, sized per platform<br>copywriter &middot; designer &middot; video editor"] --> SGN
+  SGN["<b>get sign-offs</b><br>brand and legal approve the material<br>manager &middot; brand &middot; legal"] --> GO
+  SGN -. "changes requested" .-> PRO
+  PRC["<b>set up the practical side</b><br>tracking, landing pages, ad setup, schedule<br>manager &middot; media buyer &middot; web team"] --> GO
+  GO["<b>launch</b><br>posts go out, the ads start<br>manager"] --> WATCH
+  GO --> ENG
+  GO --> OPT
+  subgraph FLIGHT["while the campaign is live"]
+    WATCH["<b>watch performance</b><br>track results against the brief<br>manager &middot; analytics"]
+    ENG["<b>engage</b><br>answer comments and messages<br>manager or community manager"]
+    OPT["<b>optimize</b><br>move ad money, swap stale creative<br>manager &middot; media buyer"]
   end
-  D ~~~ SP
-  C ~~~ ST
-  RD ~~~ CM
-  classDef phase fill:#0F1D22,stroke:#6BA8FF,color:#E7EFEC;
-  classDef never fill:#151a14,stroke:#F2A93B,color:#E7EFEC;
+  OPT -. "needs new assets" .-> PRO
+  WATCH --> WRAP
+  ENG --> WRAP
+  OPT --> WRAP
+  WRAP["<b>wrap up</b><br>ads off, numbers pulled, reported<br>manager"] --> LRN
+  LRN["<b>record what was learned</b><br>what to repeat, what to avoid<br>manager"] --> DONE(["the campaign is closed"])
+  classDef act fill:#0F1D22,stroke:#6BA8FF,color:#E7EFEC;
+  classDef gate fill:#151a14,stroke:#F2A93B,color:#E7EFEC;
   classDef ends fill:#0b1220,stroke:#4A5D5A,color:#7C918C;
-  classDef lane fill:#0F1D22,stroke:#7C918C,stroke-dasharray:4 4,color:#E7EFEC;
-  class D,P,C,S,RD phase;
-  class L never;
+  class IN,PAR,CRB,DIR,PRO,PRC,GO,WATCH,ENG,OPT,WRAP,LRN act;
+  class SGN gate;
   class T,DONE ends;
-  class SP,ST,CM lane;
             </pre>
           </div>
           <p class="mpan-hint">drag the diagram sideways, or scroll inside it, to see the
