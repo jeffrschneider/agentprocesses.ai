@@ -42,7 +42,7 @@
       <div class="wrap hero">
         <span class="eyebrow"><span class="tag">agent processes</span> &middot; the agent lifecycle</span>
         <h1>New agent</h1>
-        <p class="lede">A request in words, with a prototype attached when one exists, becomes a running agent on the fleet. Every phase is held by an agent of the lifecycle except the two where the owner says yes, and every handoff is a file the next phase can read.</p>
+        <p class="lede">A request in words, with a prototype attached when one exists, becomes a running agent on the fleet. Six phases are held by agents of the lifecycle, three are the owner&#x27;s to answer, and every handoff is a file the next phase can read.</p>
         <div class="cta">
           <a class="btn btn-lead" href="#document">the document</a>
           <a class="btn btn-ghost" href="https://agenticdevelopment.ai/stages.html">the stages it holds &#8599;</a>
@@ -52,13 +52,13 @@
         <div class="wrap">
           <p class="kicker">where it stands</p>
           <h2>What has actually happened with it</h2>
-          <p>This process has run end to end once, as run r-20260915-f17b on 2026-09-15, which produced the incident recorder. It took three starts; the first two stopped on plumbing that has since been fixed. Two phases are weaker than their names: the conformance check ran and confirmed nothing (eleven cases, seven inconclusive, four flagged for a person), and the publish phase as written was held by an agent that publishes files, not listings, so the phase is changing to mean the agent&#x27;s catalog listing and its AgentDoc. The owner&#x27;s gates were answered by the operator&#x27;s seat. The plan behind it is at agenticdevelopment.ai.</p>
+          <p>This process has run end to end once, as run r-20260915-f17b on 2026-09-15, which produced the incident recorder. It took three starts; the first two stopped on plumbing that has since been fixed. One phase is weaker than its name: the conformance check ran and confirmed nothing, with eleven cases, seven inconclusive and four flagged for a person. Two have been rewritten since that run. The deploy phase was done by hand then and now files a request into the platform&#x27;s queue, already approved at the gate before it, which was proved on 2026-09-15 by deploying a throwaway agent and removing it. The publish phase named an agent that publishes files rather than listings, and now reads as the owner&#x27;s decision that the agent may be listed. The owner&#x27;s gates were answered by the operator&#x27;s seat. The plan behind it is at agenticdevelopment.ai.</p>
         </div>
       </section>
       <section class="band">
         <div class="wrap">
           <h2>Who holds what</h2>
-          <p>The spec-writer, the test-writer, the code-writer, the package maker and the conformance checker each hold one phase; the roles are published at agentroles.ai. The owner holds two gates, the spec and the deploy, and the deploy itself is a manual phase in this version, until a run can file the deploy request into the platform&#x27;s queue.</p>
+          <p>The spec-writer, the test-writer, the code-writer, the package maker, the deployment manager and the conformance checker each hold one phase; the roles are published at agentroles.ai. The owner holds three: the spec, the deploy, and whether the agent may be listed. The deploy phase files its request into the platform&#x27;s queue carrying the owner&#x27;s yes, and the deployment manager answers the run with the handle and the signed deployment record. No fleet agent holds the listing act yet, so the platform makes the listing from the descriptor once the owner says it may.</p>
         </div>
       </section>
       <section class="band">
@@ -115,13 +115,14 @@ phases:
                         owner: letta1.jeffrschneider@gmail.com
                         after: make-the-package
                         automation: never
-  deploy-the-agent    - human: the owner files the deploy request for
-                        the package and the deployment manager installs
-                        it, or updates it when the name already runs;
-                        the run waits for the agent&#x27;s handle
-                        owner: letta1.jeffrschneider@gmail.com
+  deploy-the-agent    - runs deploy: the package installed on the fleet
+                        through the deploy queue, approved at the gate
+                        before it, or updated when the name already
+                        runs; the deployment manager answers with the
+                        agent&#x27;s handle and the signed deployment record
+                        owner: deploymgr
                         after: approve-the-deploy
-                        automation: manual
+                        automation: autonomous
   check-conformance   - runs evaluate: the test derived from the
                         package&#x27;s own declarations, run against the
                         installed agent, with each case confirmed or
@@ -129,10 +130,15 @@ phases:
                         owner: agentevaluator
                         after: deploy-the-agent
                         automation: autonomous
-  publish-the-agent   - runs publish: the agent&#x27;s listing in the catalog
-                        owner: publisher
+  publish-the-agent   - human: the owner reads the agent&#x27;s AgentDoc, which
+                        the platform assembled from the deployed agent&#x27;s
+                        descriptor and the conformance record, and says
+                        it may be listed; the listing is the platform&#x27;s,
+                        made from the descriptor, and no fleet agent
+                        holds this act yet
+                        owner: letta1.jeffrschneider@gmail.com
                         after: check-conformance
-                        automation: supervised
+                        automation: never
 
 handoffs:
   write-the-spec -&gt; approve-the-spec [spec]: spec.json and the list of
@@ -155,7 +161,8 @@ handoffs:
   deploy-the-agent -&gt; check-conformance [agent]: the agent&#x27;s handle and
       the deployment record
   check-conformance -&gt; publish-the-agent [eval-record]: the signed eval
-      record, every case confirmed or failed
+      record, every case confirmed, failed or flagged, and the AgentDoc&#x27;s
+      address
 
 deviations:
   approve-the-spec -&gt; write-the-spec [changes]: the owner names what is
@@ -174,8 +181,9 @@ deviations:
 
 bindings:
   roster: spec-writer, test-writer, code-writer, agentbuilder,
-      agentevaluator and publisher are agents, one per phase, named in
+      deploymgr and agentevaluator are agents, one per phase, named in
       the roster the owner sends with the run; the person is the owner
+      and holds the three human phases
   systems: none of the phases reaches a system of its own; each agent
       brings what its package declares
   data: the request, and the prototype when there is one
