@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New agent · the Agent SDLC&#x27;s first process · Agent Processes</title>
+  <meta name="description" content="The process that turns a request in words into a deployed agent: spec, the owner&#x27;s yes, suite, scripts, package, the owner&#x27;s yes, deploy, conformance, publish.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="rail">
+      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+      <nav>
+        <div class="grp">this process</div>
+        <a href="#status">/ where-it-stands</a>
+        <a href="#document">/ the-document</a>
+        <div class="grp">the library</div>
+        <a href="/">/ overview</a>
+        <a href="/#format">/ the-process-format</a>
+        <a href="/#catalog">/ the-catalog-format</a>
+        <div class="grp">the agent lifecycle</div>
+        <a class="on" href="new-agent.html">/ new-agent</a>
+        <a href="retire-an-agent.html">/ retire-an-agent</a>
+        <a href="incident.html">/ incident</a>
+        <div class="grp">worked examples</div>
+        <a href="social-campaign.html">/ social-campaign</a>
+        <a href="run-simulation.html">/ run-simulation</a>
+        <a href="marketing-catalog.html">/ marketing-catalog</a>
+        <div class="grp">reference</div>
+        <a href="processes-work-and-collab.html">/ Processes, Work and Collab</a>
+        <a href="https://agenticdevelopment.ai/">/ the-agent-lifecycle &#8599;</a>
+      </nav>
+      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
+    </aside>
+    <main class="main" id="top">
+      <div class="wrap hero">
+        <span class="eyebrow"><span class="tag">agent processes</span> &middot; the agent lifecycle</span>
+        <h1>New agent</h1>
+        <p class="lede">A request in words, with a prototype attached when one exists, becomes a running agent on the fleet. Every phase is held by an agent of the lifecycle except the two where the owner says yes, and every handoff is a file the next phase can read.</p>
+        <div class="cta">
+          <a class="btn btn-lead" href="#document">the document</a>
+          <a class="btn btn-ghost" href="https://agenticdevelopment.ai/stages.html">the stages it holds &#8599;</a>
+        </div>
+      </div>
+      <section class="band" id="status">
+        <div class="wrap">
+          <p class="kicker">where it stands</p>
+          <h2>What has actually happened with it</h2>
+          <p>This process has run end to end once, as run r-20260915-f17b on 2026-09-15, which produced the incident recorder. It took three starts; the first two stopped on plumbing that has since been fixed. Two phases are weaker than their names: the conformance check ran and confirmed nothing (eleven cases, seven inconclusive, four flagged for a person), and the publish phase as written was held by an agent that publishes files, not listings, so the phase is changing to mean the agent&#x27;s catalog listing and its AgentDoc. The owner&#x27;s gates were answered by the operator&#x27;s seat. The plan behind it is at agenticdevelopment.ai.</p>
+        </div>
+      </section>
+      <section class="band">
+        <div class="wrap">
+          <h2>Who holds what</h2>
+          <p>The spec-writer, the test-writer, the code-writer, the package maker and the conformance checker each hold one phase; the roles are published at agentroles.ai. The owner holds two gates, the spec and the deploy, and the deploy itself is a manual phase in this version, until a run can file the deploy request into the platform&#x27;s queue.</p>
+        </div>
+      </section>
+      <section class="band">
+        <div class="wrap">
+          <h2>What a change is</h2>
+          <p>There is no separate change process. A change to a released agent is this process run again, with the change in words and the version that runs today attached as the prototype; the deploy phase updates the agent that runs. Before a version is released there is nothing to change: the run&#x27;s own deviations send a spec, a suite or the scripts back.</p>
+        </div>
+      </section>
+      <section class="band" id="document">
+        <div class="wrap">
+          <p class="kicker">the document</p>
+          <h2>New agent, in the process language</h2>
+          <p>This is the document the process runner reads, as it stands in the repository. The roster that names which agent holds each phase travels with the run, not with the document.</p>
+          <pre class="code">PROCESS: make a new agent     id: agentmesh/new-agent v1
+owner: letta1.jeffrschneider@gmail.com   effective: 2026-09-14
+trigger: a person asks for an agent, in words, with a prototype attached
+         when one exists; or asks for a released agent to differ, with the
+         version that runs today attached as the prototype
+concurrency: runs may overlap - one run per agent
+goal: a running agent on the fleet whose package was made from a spec
+      the owner approved, whose scripts pass a suite written before them,
+      and whose conformance was checked by an agent that did not build
+      it, with every step on the record
+
+phases:
+  write-the-spec      - runs write-a-spec: the request turned into a
+                        spec, with every blank the request left named
+                        owner: spec-writer
+                        after: trigger    automation: autonomous
+  approve-the-spec    - human: the owner reads the spec, answers what it
+                        left open, changes it or says yes
+                        owner: letta1.jeffrschneider@gmail.com
+                        after: write-the-spec
+                        automation: never
+  write-the-suite     - runs write-a-suite: the tests the scripts will
+                        be held to, written from the spec alone and shown
+                        to fail against nothing
+                        owner: test-writer
+                        after: approve-the-spec
+                        automation: autonomous
+  write-the-scripts   - runs write-the-scripts: the scripts the spec
+                        names, in the house stack, passing the suite,
+                        with the prototype read when there is one
+                        owner: code-writer
+                        after: write-the-suite
+                        automation: autonomous
+  make-the-package    - runs build: the signed package made from the
+                        spec and the delivered scripts, and nothing else
+                        owner: agentbuilder
+                        after: write-the-scripts
+                        automation: autonomous
+  approve-the-deploy  - human: the owner reads the package&#x27;s record and
+                        says whether it goes on the fleet
+                        owner: letta1.jeffrschneider@gmail.com
+                        after: make-the-package
+                        automation: never
+  deploy-the-agent    - human: the owner files the deploy request for
+                        the package and the deployment manager installs
+                        it, or updates it when the name already runs;
+                        the run waits for the agent&#x27;s handle
+                        owner: letta1.jeffrschneider@gmail.com
+                        after: approve-the-deploy
+                        automation: manual
+  check-conformance   - runs evaluate: the test derived from the
+                        package&#x27;s own declarations, run against the
+                        installed agent, with each case confirmed or
+                        failed
+                        owner: agentevaluator
+                        after: deploy-the-agent
+                        automation: autonomous
+  publish-the-agent   - runs publish: the agent&#x27;s listing in the catalog
+                        owner: publisher
+                        after: check-conformance
+                        automation: supervised
+
+handoffs:
+  write-the-spec -&gt; approve-the-spec [spec]: spec.json and the list of
+      what the request left open
+  approve-the-spec -&gt; write-the-suite [approved-spec]: the spec as the
+      owner left it, with who approved it and when
+  approve-the-spec -&gt; write-the-scripts [approved-spec]: the same spec,
+      and the prototype when one came with the request
+  write-the-suite -&gt; write-the-scripts [suite]: every test file, and the
+      note of what the suite could not cover
+  approve-the-spec -&gt; make-the-package [approved-spec]: the spec as the
+      owner left it, which names the scripts the package must ship
+  write-the-scripts -&gt; make-the-package [scripts]: every script the spec
+      names, the writer&#x27;s account, and the job manifest the adapter
+      signed on delivery
+  make-the-package -&gt; approve-the-deploy [package]: the package address,
+      its sha256, and the build record
+  approve-the-deploy -&gt; deploy-the-agent [approved-package]: the package
+      address and sha256, with who approved it and when
+  deploy-the-agent -&gt; check-conformance [agent]: the agent&#x27;s handle and
+      the deployment record
+  check-conformance -&gt; publish-the-agent [eval-record]: the signed eval
+      record, every case confirmed or failed
+
+deviations:
+  approve-the-spec -&gt; write-the-spec [changes]: the owner names what is
+      wrong or answers a blank; the spec is revised, not redrafted
+  write-the-scripts -&gt; approve-the-spec [conflict]: a test cannot pass
+      without breaking what the spec says; the owner decides which of
+      the two is wrong, and the suite or the spec is revised
+  make-the-package -&gt; write-the-scripts [untraced]: a script the package
+      would ship cannot be traced to the code-writer&#x27;s delivery; it goes
+      back through the code-writer
+  check-conformance -&gt; write-the-scripts [failed]: a case the package&#x27;s
+      own declarations promise has failed; the scripts are revised
+      against the same suite
+  approve-the-deploy -&gt; write-the-spec [wrong-spec]: what was built is
+      not what was wanted; the request is restated and the spec redone
+
+bindings:
+  roster: spec-writer, test-writer, code-writer, agentbuilder,
+      agentevaluator and publisher are agents, one per phase, named in
+      the roster the owner sends with the run; the person is the owner
+  systems: none of the phases reaches a system of its own; each agent
+      brings what its package declares
+  data: the request, and the prototype when there is one
+
+policy:
+  a spec goes to the owner before any suite or script is written
+  the suite is written from the spec and never from the scripts
+  no test is edited to make a script pass, and no script is delivered
+      that the suite fails
+  only scripts the code-writer delivered are packed; a script written
+      or changed by hand goes back through the code-writer
+  nothing goes on the fleet without the owner&#x27;s yes on the package
+  a prototype is read as the most exact statement of what was wanted and
+      is never shipped as it stands
+
+measures:
+  time: from the request to the agent&#x27;s handle
+  rounds: revisions before the owner approves the spec, and before the
+      conformance check passes
+  defects: cases the conformance check failed on the first pass
+</pre>
+        </div>
+      </section>
+      <footer>
+        <div class="wrap">
+          <span>Agent Processes &middot; your work, written down</span>
+          <a href="https://github.com/jeffrschneider/agentprocesses">GitHub &#8599;</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

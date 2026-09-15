@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incident · a reference process · Agent Processes</title>
+  <meta name="description" content="The reference process for an agent that went quiet or a job that failed: notice, gather the records, record the incident, decide.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="rail">
+      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+      <nav>
+        <div class="grp">this process</div>
+        <a href="#status">/ where-it-stands</a>
+        <a href="#document">/ the-document</a>
+        <div class="grp">the library</div>
+        <a href="/">/ overview</a>
+        <a href="/#format">/ the-process-format</a>
+        <a href="/#catalog">/ the-catalog-format</a>
+        <div class="grp">the agent lifecycle</div>
+        <a href="new-agent.html">/ new-agent</a>
+        <a href="retire-an-agent.html">/ retire-an-agent</a>
+        <a class="on" href="incident.html">/ incident</a>
+        <div class="grp">worked examples</div>
+        <a href="social-campaign.html">/ social-campaign</a>
+        <a href="run-simulation.html">/ run-simulation</a>
+        <a href="marketing-catalog.html">/ marketing-catalog</a>
+        <div class="grp">reference</div>
+        <a href="processes-work-and-collab.html">/ Processes, Work and Collab</a>
+        <a href="https://agenticdevelopment.ai/">/ the-agent-lifecycle &#8599;</a>
+      </nav>
+      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
+    </aside>
+    <main class="main" id="top">
+      <div class="wrap hero">
+        <span class="eyebrow"><span class="tag">agent processes</span> &middot; the agent lifecycle</span>
+        <h1>Incident</h1>
+        <p class="lede">The watcher notices, a person gathers the records, the incident recorder writes the timeline and the record with every gap named, and a person decides. No cause is guessed and no fix is proposed by an agent.</p>
+        <div class="cta">
+          <a class="btn btn-lead" href="#document">the document</a>
+          <a class="btn btn-ghost" href="https://agenticdevelopment.ai/stages.html">the stages it holds &#8599;</a>
+        </div>
+      </div>
+      <section class="band" id="status">
+        <div class="wrap">
+          <p class="kicker">where it stands</p>
+          <h2>What has actually happened with it</h2>
+          <p>A reference process: it is published to be adopted, not run as it stands. Its owner and effective lines are blanks the adopter fills, and the watcher&#x27;s phase has no holder because no watcher exists yet. The process runner refuses the document with those blanks open, on purpose. The incident recorder that holds the recording phase exists: it was the agent the New agent process produced on its first run.</p>
+        </div>
+      </section>
+      <section class="band" id="document">
+        <div class="wrap">
+          <p class="kicker">the document</p>
+          <h2>Incident, in the process language</h2>
+          <p>This is the document the process runner reads, as it stands in the repository. The roster that names which agent holds each phase travels with the run, not with the document.</p>
+          <pre class="code">PROCESS: record an incident     id: agentmesh/incident v1
+owner: &lt;the account that adopts this process&gt;   effective: &lt;the date it adopts it&gt;
+trigger: an agent on the fleet goes quiet or a job fails, noticed by the
+         watcher, or reported by a person naming the agent and the time
+concurrency: runs may overlap - one run per agent and time
+goal: an incident record that names every fact&#x27;s source and every gap,
+      in front of a person who decides what happens next, with nothing
+      guessed and nothing fixed by an agent
+
+This is a reference process: it is published to be adopted, not run as it
+stands. The watcher&#x27;s phase has no holder, because no watcher exists yet,
+and the owner and effective lines above are blanks the adopter fills. The
+process runner refuses a document with either blank, on purpose.
+
+phases:
+  notice              - runs watch: the agent that went quiet or the job
+                        that failed, with the time, from the platform&#x27;s
+                        records; until a watcher exists a person notices
+                        and sends the trigger by hand
+                        owner: watcher
+                        after: trigger    automation: autonomous
+  gather-the-records  - human: the person collects the platform&#x27;s
+                        activity records and the agent&#x27;s own records for
+                        the window around the failure and attaches them
+                        owner: &lt;the adopter&gt;
+                        after: notice
+                        automation: manual
+  record-the-incident - runs record-incident: the timeline of what is
+                        known and what is not, and the incident record
+                        naming every fact&#x27;s source and every gap
+                        owner: incident-recorder
+                        after: gather-the-records
+                        automation: autonomous
+  decide              - human: the person reads the record and decides:
+                        leave it, restart the agent, retire it, or start
+                        a New agent run to change it
+                        owner: &lt;the adopter&gt;
+                        after: record-the-incident
+                        automation: never
+
+handoffs:
+  notice -&gt; gather-the-records [alarm]: the agent&#x27;s handle, the time, and
+      what the watcher saw
+  gather-the-records -&gt; record-the-incident [records]: the platform&#x27;s
+      activity records and the agent&#x27;s own records for the window, as
+      files
+  record-the-incident -&gt; decide [incident]: the timeline and the incident
+      record, with the gaps named
+
+deviations:
+  record-the-incident -&gt; gather-the-records [more-records]: the record
+      names a gap the person can fill from records they did not attach;
+      they attach them and the record is written again
+
+bindings:
+  roster: the incident recorder is an agent named in the roster the
+      adopter sends with the run; the watcher is unheld until one exists;
+      the person is the adopter
+  systems: none of the phases reaches a system of its own; the records
+      arrive as files
+  data: the platform&#x27;s activity records, the agent&#x27;s own records
+
+policy:
+  no cause is guessed and no fix is proposed by an agent; the record says
+      what is known, what is not, and where each fact came from
+  the agent being recorded is never contacted by the recorder
+  the decision is a person&#x27;s, every time
+
+measures:
+  time: from the notice to the decision
+  gaps: intervals in the timeline no record covers
+</pre>
+        </div>
+      </section>
+      <footer>
+        <div class="wrap">
+          <span>Agent Processes &middot; your work, written down</span>
+          <a href="https://github.com/jeffrschneider/agentprocesses">GitHub &#8599;</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

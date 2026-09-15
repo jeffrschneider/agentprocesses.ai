@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retire an agent · Agent Processes</title>
+  <meta name="description" content="The process that takes a released agent out of service: the listing down, the owner&#x27;s yes, the removal, the AgentDoc closed.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="rail">
+      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+      <nav>
+        <div class="grp">this process</div>
+        <a href="#status">/ where-it-stands</a>
+        <a href="#document">/ the-document</a>
+        <div class="grp">the library</div>
+        <a href="/">/ overview</a>
+        <a href="/#format">/ the-process-format</a>
+        <a href="/#catalog">/ the-catalog-format</a>
+        <div class="grp">the agent lifecycle</div>
+        <a href="new-agent.html">/ new-agent</a>
+        <a class="on" href="retire-an-agent.html">/ retire-an-agent</a>
+        <a href="incident.html">/ incident</a>
+        <div class="grp">worked examples</div>
+        <a href="social-campaign.html">/ social-campaign</a>
+        <a href="run-simulation.html">/ run-simulation</a>
+        <a href="marketing-catalog.html">/ marketing-catalog</a>
+        <div class="grp">reference</div>
+        <a href="processes-work-and-collab.html">/ Processes, Work and Collab</a>
+        <a href="https://agenticdevelopment.ai/">/ the-agent-lifecycle &#8599;</a>
+      </nav>
+      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
+    </aside>
+    <main class="main" id="top">
+      <div class="wrap hero">
+        <span class="eyebrow"><span class="tag">agent processes</span> &middot; the agent lifecycle</span>
+        <h1>Retire an agent</h1>
+        <p class="lede">An agent that answers nobody, holds no listing that says it does, and whose AgentDoc says when it was retired and why. Nothing is removed before the listing is gone and nothing without the owner&#x27;s yes.</p>
+        <div class="cta">
+          <a class="btn btn-lead" href="#document">the document</a>
+          <a class="btn btn-ghost" href="https://agenticdevelopment.ai/stages.html">the stages it holds &#8599;</a>
+        </div>
+      </div>
+      <section class="band" id="status">
+        <div class="wrap">
+          <p class="kicker">where it stands</p>
+          <h2>What has actually happened with it</h2>
+          <p>Written and validated in the process runner&#x27;s parser; it has not run. Every phase is the owner&#x27;s for now: the publisher&#x27;s job publishes files and cannot retract a listing, the deployment manager cannot yet take a run&#x27;s instruction to remove, and the documenter that assembles AgentDocs is the platform&#x27;s and holds no seat on the fleet. The document says which phases become theirs when they can.</p>
+        </div>
+      </section>
+      <section class="band" id="document">
+        <div class="wrap">
+          <p class="kicker">the document</p>
+          <h2>Retire an agent, in the process language</h2>
+          <p>This is the document the process runner reads, as it stands in the repository. The roster that names which agent holds each phase travels with the run, not with the document.</p>
+          <pre class="code">PROCESS: retire an agent     id: agentmesh/retire-an-agent v1
+owner: letta1.jeffrschneider@gmail.com   effective: 2026-09-15
+trigger: the owner asks for a released agent to be retired, naming its
+         handle and the reason
+concurrency: runs may overlap - one run per agent
+goal: an agent that answers nobody, holds no listing that says it does,
+      and whose AgentDoc says when it was retired and why, with every
+      step on the record
+
+phases:
+  say-what-goes       - human: the owner names the agent, says why it is
+                        retired, and names what depends on it that must
+                        be told first
+                        owner: letta1.jeffrschneider@gmail.com
+                        after: trigger    automation: never
+  retract-the-listing - human: the owner takes the agent&#x27;s listing out of
+                        the catalog, so nobody finds it and asks; the
+                        platform makes and removes listings from the
+                        deployed agent&#x27;s descriptor, and no agent on the
+                        fleet holds that act yet
+                        owner: letta1.jeffrschneider@gmail.com
+                        after: say-what-goes
+                        automation: manual
+  approve-the-removal - human: the owner reads what will be removed, the
+                        host half and the job that does its work, and
+                        says yes
+                        owner: letta1.jeffrschneider@gmail.com
+                        after: retract-the-listing
+                        automation: never
+  remove-the-agent    - human: the owner instructs the deployment manager
+                        to remove the agent, which takes down both halves
+                        and names anything it could not remove; the run
+                        waits for the removal record
+                        owner: letta1.jeffrschneider@gmail.com
+                        after: approve-the-removal
+                        automation: manual
+  close-the-doc       - human: the owner marks the agent&#x27;s AgentDoc as
+                        retired, with the date and the reason; the
+                        documenter that assembles AgentDocs is the
+                        platform&#x27;s and holds no seat on the fleet yet
+                        owner: letta1.jeffrschneider@gmail.com
+                        after: remove-the-agent
+                        automation: manual
+
+handoffs:
+  say-what-goes -&gt; retract-the-listing [notice]: the handle, the reason,
+      and who was told
+  retract-the-listing -&gt; approve-the-removal [unlisted]: the listing as
+      it was, and when it was taken down
+  approve-the-removal -&gt; remove-the-agent [approved-removal]: the handle,
+      with who approved the removal and when
+  remove-the-agent -&gt; close-the-doc [removed]: the deployment manager&#x27;s
+      removal record, naming what was removed and anything that was not
+
+deviations:
+  approve-the-removal -&gt; say-what-goes [keep]: the owner decides the agent
+      stays; the listing goes back and the run closes with nothing removed
+  remove-the-agent -&gt; approve-the-removal [left-behind]: the deployment
+      manager could not remove something it names; the owner decides
+      whether that is acceptable or names a person to finish it
+
+bindings:
+  roster: every phase is the owner&#x27;s, until the deployment manager can
+      take a run&#x27;s instruction to remove and the platform&#x27;s documenter
+      holds a seat; then remove-the-agent and close-the-doc become theirs
+  systems: none of the phases reaches a system of its own
+  data: the agent&#x27;s handle, its listing and its AgentDoc
+
+policy:
+  nothing is removed before the listing is gone, so nobody sends work to
+      an agent that is about to vanish
+  nothing is removed without the owner&#x27;s yes
+  the AgentDoc is never deleted; it is closed with the date and the reason
+  the handle stays claimed; a retired name is not given to another agent
+
+measures:
+  time: from the request to the closed AgentDoc
+  left behind: things the deployment manager could not remove
+</pre>
+        </div>
+      </section>
+      <footer>
+        <div class="wrap">
+          <span>Agent Processes &middot; your work, written down</span>
+          <a href="https://github.com/jeffrschneider/agentprocesses">GitHub &#8599;</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
