@@ -63,6 +63,24 @@
       </section>
       <section class="band">
         <div class="wrap">
+          <h2>Four things settled before the shape</h2>
+          <p>Version 2 moved four answers to the front of the spec phase, because each one changes
+             what a later phase does, all four are cheap to answer now, and two of them can end a
+             run before a suite is written. They are the person&#x27;s to settle and the spec-writer
+             only gathers and drafts them, which is why that phase reads as assisted rather than
+             autonomous.</p>
+          <p>Which kind of agent this is, out of the four an agent&#x27;s inside can be; only a
+             package a harness reads is made here, and any other answer says so out loud and hands
+             the request to the path it belongs on. Whether this is one agent or several, since work
+             whose handoffs cross to another agent is a process rather than one overloaded agent.
+             Whether the organization can put a real product behind every system the design names,
+             read against its own stack. And whether the thing already exists, where using one that
+             does ends the run without building anything, which is a good outcome rather than a
+             failure.</p>
+        </div>
+      </section>
+      <section class="band">
+        <div class="wrap">
           <h2>What a change is</h2>
           <p>There is no separate change process. A change to a released agent is this process run again, with the change in words and the version that runs today attached as the prototype; the deploy phase updates the agent that runs. Before a version is released there is nothing to change: the run&#x27;s own deviations send a spec, a suite or the scripts back.</p>
         </div>
@@ -72,8 +90,8 @@
           <p class="kicker">the document</p>
           <h2>New agent, in the process language</h2>
           <p>This is the document the process runner reads, as it stands in the repository. The roster that names which agent holds each phase travels with the run, not with the document.</p>
-          <pre class="code">PROCESS: make a new agent     id: agentmesh/new-agent v1
-owner: letta1.jeffrschneider@gmail.com   effective: 2026-09-14
+          <pre class="code">PROCESS: make a new agent     id: agentmesh/new-agent v2
+owner: letta1.jeffrschneider@gmail.com   effective: 2026-09-15
 trigger: a person asks for an agent, in words, with a prototype attached
          when one exists; or asks for a released agent to differ, with the
          version that runs today attached as the prototype
@@ -81,13 +99,23 @@ concurrency: runs may overlap - one run per agent
 goal: a running agent on the fleet whose package was made from a spec
       the owner approved, whose scripts pass a suite written before them,
       and whose conformance was checked by an agent that did not build
-      it, with every step on the record
+      it, with every step on the record. What this process makes is one
+      kind of agent: a package a harness reads, which the Common Agent
+      specification calls plugin-on-harness. Code that answers on the
+      network itself, and somebody else&#x27;s framework wrapped as an agent,
+      are made another way and not here.
 
 phases:
-  write-the-spec      - runs write-a-spec: the request turned into a
-                        spec, with every blank the request left named
+  write-the-spec      - runs write-a-spec: the four answers settled and
+                        the request turned into a spec, with every blank
+                        the request left named. The four are which kind
+                        of agent, one agent or several, whether the
+                        organization can stand a product behind every
+                        system the design names, and whether the thing
+                        already exists; each is the person&#x27;s from a
+                        short list, and two of them can end the run
                         owner: spec-writer
-                        after: trigger    automation: autonomous
+                        after: trigger    automation: assisted
   approve-the-spec    - human: the owner reads the spec, answers what it
                         left open, changes it or says yes
                         owner: letta1.jeffrschneider@gmail.com
@@ -141,8 +169,9 @@ phases:
                         automation: never
 
 handoffs:
-  write-the-spec -&gt; approve-the-spec [spec]: spec.json and the list of
-      what the request left open
+  write-the-spec -&gt; approve-the-spec [spec]: spec.json, the four answers
+      as the person settled them, and the list of what the request left
+      open
   approve-the-spec -&gt; write-the-suite [approved-spec]: the spec as the
       owner left it, with who approved it and when
   approve-the-spec -&gt; write-the-scripts [approved-spec]: the same spec,
@@ -189,6 +218,9 @@ bindings:
   data: the request, and the prototype when there is one
 
 policy:
+  a request for an agent this process cannot make, meaning anything but
+      a package a harness reads, is said out loud at the spec and never
+      built as something else that looks close
   a spec goes to the owner before any suite or script is written
   the suite is written from the spec and never from the scripts
   no test is edited to make a script pass, and no script is delivered
@@ -204,7 +236,16 @@ measures:
   rounds: revisions before the owner approves the spec, and before the
       conformance check passes
   defects: cases the conformance check failed on the first pass
-</pre>
+
+amendments:
+  v2 - the spec phase settles four answers before the shape: which kind
+      of agent, one agent or several, whether the organization can stand
+      a product behind every system the design names, and whether the
+      thing already exists. Two of them can end a run, which is why they
+      come before a suite is written rather than at the deploy approval,
+      where the stack was the thing that found them. The phase reads as
+      assisted because the four are the person&#x27;s to settle and the
+      writer only gathers and drafts.</pre>
         </div>
       </section>
       <footer>
