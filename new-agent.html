@@ -101,7 +101,7 @@
           <h2>New agent, in the process language</h2>
           <p>This is the document the process runner reads, as it stands in the repository. The roster that names which agent holds each phase travels with the run, not with the document.</p>
           <pre class="code">PROCESS: make a new agent     id: agentmesh/new-agent v2
-owner: letta1.jeffrschneider@gmail.com   effective: 2026-09-15
+owner: letta1.ann@example.com   effective: 2026-09-15
 trigger: a person asks for an agent, in words, with a prototype attached
          when one exists; or asks for a released agent to differ, with the
          version that runs today attached as the prototype
@@ -128,7 +128,7 @@ phases:
                         after: trigger    automation: assisted
   approve-the-spec    - human: the owner reads the spec, answers what it
                         left open, changes it or says yes
-                        owner: letta1.jeffrschneider@gmail.com
+                        owner: letta1.ann@example.com
                         after: write-the-spec
                         automation: never
   write-the-suite     - runs write-a-suite: the tests the scripts will
@@ -150,7 +150,7 @@ phases:
                         automation: autonomous
   approve-the-deploy  - human: the owner reads the package&#x27;s record and
                         says whether it goes on the fleet
-                        owner: letta1.jeffrschneider@gmail.com
+                        owner: letta1.ann@example.com
                         after: make-the-package
                         automation: never
   deploy-the-agent    - runs deploy: the package installed on the fleet
@@ -174,7 +174,7 @@ phases:
                         it may be listed; the listing is the platform&#x27;s,
                         made from the descriptor, and no fleet agent
                         holds this act yet
-                        owner: letta1.jeffrschneider@gmail.com
+                        owner: letta1.ann@example.com
                         after: check-conformance
                         automation: never
 

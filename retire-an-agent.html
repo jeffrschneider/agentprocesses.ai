@@ -71,7 +71,7 @@
           <h2>Retire an agent, in the process language</h2>
           <p>This is the document the process runner reads, as it stands in the repository. The roster that names which agent holds each phase travels with the run, not with the document.</p>
           <pre class="code">PROCESS: retire an agent     id: agentmesh/retire-an-agent v1
-owner: letta1.jeffrschneider@gmail.com   effective: 2026-09-15
+owner: letta1.ann@example.com   effective: 2026-09-15
 trigger: the owner asks for a released agent to be retired, naming its
          handle and the reason
 concurrency: runs may overlap - one run per agent
@@ -83,34 +83,34 @@ phases:
   say-what-goes       - human: the owner names the agent, says why it is
                         retired, and names what depends on it that must
                         be told first
-                        owner: letta1.jeffrschneider@gmail.com
+                        owner: letta1.ann@example.com
                         after: trigger    automation: never
   retract-the-listing - human: the owner takes the agent&#x27;s listing out of
                         the catalog, so nobody finds it and asks; the
                         platform makes and removes listings from the
                         deployed agent&#x27;s descriptor, and no agent on the
                         fleet holds that act yet
-                        owner: letta1.jeffrschneider@gmail.com
+                        owner: letta1.ann@example.com
                         after: say-what-goes
                         automation: manual
   approve-the-removal - human: the owner reads what will be removed, the
                         host half and the job that does its work, and
                         says yes
-                        owner: letta1.jeffrschneider@gmail.com
+                        owner: letta1.ann@example.com
                         after: retract-the-listing
                         automation: never
   remove-the-agent    - human: the owner instructs the deployment manager
                         to remove the agent, which takes down both halves
                         and names anything it could not remove; the run
                         waits for the removal record
-                        owner: letta1.jeffrschneider@gmail.com
+                        owner: letta1.ann@example.com
                         after: approve-the-removal
                         automation: manual
   close-the-doc       - human: the owner marks the agent&#x27;s AgentDoc as
                         retired, with the date and the reason; the
                         documenter that assembles AgentDocs is the
                         platform&#x27;s and holds no seat on the fleet yet
-                        owner: letta1.jeffrschneider@gmail.com
+                        owner: letta1.ann@example.com
                         after: remove-the-agent
                         automation: manual
 
