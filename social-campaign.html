@@ -21,33 +21,59 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="/theme.css">
+  <script src="/theme.js"></script>
 </head>
 <body>
   <div class="layout">
 
-    <aside class="rail">
-      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
-      <nav>
-        <div class="grp">this example</div>
-        <a href="#document">/ the-document</a>
-        <a href="#records">/ the-records</a>
-        <div class="grp">the library</div>
-        <a href="/">/ overview</a>
-        <a href="/#format">/ the-process-format</a>
-        <a href="/#catalog">/ the-catalog-format</a>
-        <div class="grp">the agent lifecycle</div>
-        <a href="new-agent.html">/ new-agent</a>
-        <a href="retire-an-agent.html">/ retire-an-agent</a>
-        <a href="incident.html">/ incident</a>
-        <div class="grp">worked examples</div>
-        <a class="on" href="social-campaign.html">/ social-campaign</a>
-        <a href="run-simulation.html">/ run-simulation</a>
-        <a href="marketing-catalog.html">/ marketing-catalog</a>
-        <div class="grp">reference</div>
-        <a href="processes-work-and-collab.html">/ Processes, Work and Collab</a>
-        <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">/ this-example-in-the-repo &#8599;</a>
+    <aside class="rail sidenav" id="sidenav">
+      <div class="sn-head">
+        <a class="sn-brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+        <button class="sn-btn" id="theme-toggle" type="button" aria-label="Switch between light and dark"><span class="sn-to-dark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.6A5.6 5.6 0 0 1 6.4 2.5a5.6 5.6 0 1 0 7.1 7.1z" fill="currentColor"/></svg></span><span class="sn-to-light"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 1v1.8M8 13.2V15M1 8h1.8M13.2 8H15M3 3l1.3 1.3M11.7 11.7L13 13M3 13l1.3-1.3M11.7 4.3L13 3"/></g></svg></span><span class="sn-to-dark">Dark</span><span class="sn-to-light">Light</span></button>
+        <button class="sn-btn sn-menu" id="menu-toggle" type="button" aria-expanded="false" aria-controls="sidenav"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Menu</button>
+      </div>
+      <nav class="sn-nav" aria-label="agentprocesses.ai">
+        <details class="sn-sec" open>
+          <summary>This example<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="#document">The document</a>
+          <a href="#records">The records</a>
+          </div>
+        </details>
+        <details class="sn-sec" open>
+          <summary>The library<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="/">Overview</a>
+          <a href="/#format">The process format</a>
+          <a href="/#catalog">The catalog format</a>
+          </div>
+        </details>
+        <details class="sn-sec" open>
+          <summary>The agent lifecycle<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="new-agent.html">New agent</a>
+          <a href="retire-an-agent.html">Retire an agent</a>
+          <a href="incident.html">Incident</a>
+          </div>
+        </details>
+        <details class="sn-sec" open>
+          <summary>Worked examples<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a class="on" href="social-campaign.html">Social campaign</a>
+          <a href="run-simulation.html">Run simulation</a>
+          <a href="marketing-catalog.html">Marketing catalog</a>
+          </div>
+        </details>
+        <details class="sn-sec" open>
+          <summary>Reference<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="processes-work-and-collab.html">Processes, Work and Collab</a>
+          <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">This example in the repo &#8599;</a>
+          </div>
+        </details>
       </nav>
-      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      <div class="sn-foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
       your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
     </aside>
 

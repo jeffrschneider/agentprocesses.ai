@@ -72,7 +72,7 @@
   background-size:33px 33px; background-position:-1px -1px; }
 
 /* -- the run column ---------------------------------------------------- */
-.ps-run{ border-right:1px solid var(--line); background:rgba(0,0,0,.16);
+.ps-run{ border-right:1px solid var(--line); background:var(--surface-2);
   padding:11px 12px 13px; overflow-y:auto; scrollbar-width:thin; min-height:0;
   scroll-behavior:smooth; }
 @container (max-width: 720px){
@@ -156,7 +156,7 @@
 
 /* -- the system panel and the quiet stretch ---------------------------- */
 .ps-sys{ position:absolute; left:8%; right:8%; top:50%; transform:translateY(-50%);
-  border:1px solid var(--line); border-radius:10px; background:rgba(0,0,0,.35);
+  border:1px solid var(--line); border-radius:10px; background:var(--surface-2);
   padding:13px 16px; display:none; }
 .ps-sys.on{ display:block; animation:acsim-fade .4s ease; }
 .ps-sys-h{ font-family:var(--wire); font-size:.6rem; letter-spacing:.16em;
@@ -181,7 +181,7 @@
 
 /* -- controls ----------------------------------------------------------- */
 .acsim-ctl{ display:flex; align-items:center; gap:9px; padding:10px 20px 12px;
-  border-top:1px solid var(--line); background:rgba(0,0,0,.14); }
+  border-top:1px solid var(--line); background:var(--surface-2); }
 .acsim-btn{ font-family:var(--wire); font-size:.78rem; color:var(--dim);
   background:transparent; border:1px solid var(--line); border-radius:7px;
   padding:5px 9px; cursor:pointer; line-height:1; min-width:29px;
@@ -201,7 +201,7 @@
   flex:0 0 auto; font-variant-numeric:tabular-nums; }
 
 /* -- transcript: a strip along the bottom ------------------------------ */
-.acsim-log{ border-top:1px solid var(--line); background:rgba(0,0,0,.16); }
+.acsim-log{ border-top:1px solid var(--line); background:var(--surface-2); }
 .acsim-log-in{ max-height:110px; overflow-y:auto; padding:8px 0; scrollbar-width:thin; }
 .acsim-log-h{ font-family:var(--wire); font-size:.6rem; letter-spacing:.17em;
   text-transform:uppercase; color:var(--faint); padding:0 14px 8px; }

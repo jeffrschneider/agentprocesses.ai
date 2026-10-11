@@ -78,7 +78,7 @@
     .callout p:first-of-type{ margin-top:0; }
     .callout p b{ color:var(--paper); }
 
-    pre.code{ background:#0b1220; border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+    pre.code{ background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:16px 18px;
       overflow-x:auto; font-family:var(--wire); font-size:.82rem; line-height:1.7; color:var(--paper); margin:20px 0; }
     pre.code .c{ color:var(--faint); }
     pre.code .k{ color:var(--lead); }
@@ -112,7 +112,7 @@
     .btn{ font-family:var(--wire); font-size:.86rem; font-weight:500; text-decoration:none;
       padding:12px 20px; border-radius:8px; border:1px solid transparent; display:inline-flex; align-items:center; gap:8px;
       transition:transform .16s ease, box-shadow .2s ease, border-color .2s ease; }
-    .btn-lead{ background:var(--lead); color:#08172b; font-weight:600;
+    .btn-lead{ background:var(--lead); color:var(--on-accent); font-weight:600;
       box-shadow:0 12px 30px -14px rgba(107,168,255,.8); }
     .btn-lead:hover{ transform:translateY(-2px); }
     .btn-ghost{ border-color:var(--line); color:var(--paper); background:rgba(255,255,255,.02); }

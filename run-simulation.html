@@ -30,40 +30,69 @@
     .mpan pre.mermaid{ margin:0; width:max-content; background:transparent;
       font-family:var(--wire); font-size:.75rem; color:var(--faint); }
     .mpan svg{ display:block; }
+    /* edge label words keep the palette the diagram was drawn in (see the
+       module script), so they stay readable on its label ground after a switch */
+    .mpan .edgeLabel p, .mpan .edgeLabel span{ color:var(--ml-text, var(--text-2)); }
     .mpan-hint{ font-family:var(--wire); font-size:.68rem; color:var(--faint);
       margin:8px 0 0; }
     .mpan-title{ position:sticky; left:0; width:max-content; max-width:100%;
       font-family:var(--disp); font-weight:600; font-size:.98rem; color:var(--paper);
       padding:2px 6px 10px; }
   </style>
+  <link rel="stylesheet" href="/theme.css">
+  <script src="/theme.js"></script>
 </head>
 <body>
   <div class="layout">
 
-    <aside class="rail">
-      <a class="brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
-      <nav>
-        <div class="grp">this page</div>
-        <a href="#process">/ the-diagram</a>
-        <a href="#fleet">/ people-to-agents</a>
-        <a href="#simulation">/ the-run</a>
-        <div class="grp">the library</div>
-        <a href="/">/ overview</a>
-        <a href="/#format">/ the-process-format</a>
-        <a href="/#catalog">/ the-catalog-format</a>
-        <div class="grp">the agent lifecycle</div>
-        <a href="new-agent.html">/ new-agent</a>
-        <a href="retire-an-agent.html">/ retire-an-agent</a>
-        <a href="incident.html">/ incident</a>
-        <div class="grp">worked examples</div>
-        <a href="social-campaign.html">/ social-campaign</a>
-        <a class="on" href="run-simulation.html">/ run-simulation</a>
-        <a href="marketing-catalog.html">/ marketing-catalog</a>
-        <div class="grp">reference</div>
-        <a href="processes-work-and-collab.html">/ Processes, Work and Collab</a>
-        <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">/ the-process-in-the-repo &#8599;</a>
+    <aside class="rail sidenav" id="sidenav">
+      <div class="sn-head">
+        <a class="sn-brand" href="/"><span class="dot"></span>AGENT PROCESSES</a>
+        <button class="sn-btn" id="theme-toggle" type="button" aria-label="Switch between light and dark"><span class="sn-to-dark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.6A5.6 5.6 0 0 1 6.4 2.5a5.6 5.6 0 1 0 7.1 7.1z" fill="currentColor"/></svg></span><span class="sn-to-light"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 1v1.8M8 13.2V15M1 8h1.8M13.2 8H15M3 3l1.3 1.3M11.7 11.7L13 13M3 13l1.3-1.3M11.7 4.3L13 3"/></g></svg></span><span class="sn-to-dark">Dark</span><span class="sn-to-light">Light</span></button>
+        <button class="sn-btn sn-menu" id="menu-toggle" type="button" aria-expanded="false" aria-controls="sidenav"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Menu</button>
+      </div>
+      <nav class="sn-nav" aria-label="agentprocesses.ai">
+        <details class="sn-sec" open>
+          <summary>This page<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="#process">The diagram</a>
+          <a href="#fleet">People to agents</a>
+          <a href="#simulation">The run</a>
+          </div>
+        </details>
+        <details class="sn-sec" open>
+          <summary>The library<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="/">Overview</a>
+          <a href="/#format">The process format</a>
+          <a href="/#catalog">The catalog format</a>
+          </div>
+        </details>
+        <details class="sn-sec" open>
+          <summary>The agent lifecycle<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="new-agent.html">New agent</a>
+          <a href="retire-an-agent.html">Retire an agent</a>
+          <a href="incident.html">Incident</a>
+          </div>
+        </details>
+        <details class="sn-sec" open>
+          <summary>Worked examples<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="social-campaign.html">Social campaign</a>
+          <a class="on" href="run-simulation.html">Run simulation</a>
+          <a href="marketing-catalog.html">Marketing catalog</a>
+          </div>
+        </details>
+        <details class="sn-sec" open>
+          <summary>Reference<svg class="sn-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="sn-items">
+          <a href="processes-work-and-collab.html">Processes, Work and Collab</a>
+          <a href="https://github.com/jeffrschneider/agentprocesses/blob/main/examples/social-campaign.md">The process in the repo &#8599;</a>
+          </div>
+        </details>
       </nav>
-      <div class="foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
+      <div class="sn-foot"><a href="https://agentmesh.ai/standards.html">The family of standards</a><br><br>
       your work, written down<br>github.com/jeffrschneider/agentprocesses</div>
     </aside>
 
@@ -123,9 +152,9 @@ flowchart LR
   OPT --> WRAP
   WRAP["<b>12. wrap up</b><br>ads off, numbers pulled, reported<br>manager"] --> LRN
   LRN["<b>13. record what was learned</b><br>what to repeat, what to avoid<br>manager"] --> DONE(["the campaign is closed"])
-  classDef act fill:#0F1D22,stroke:#6BA8FF,color:#E7EFEC;
-  classDef gate fill:#151a14,stroke:#F2A93B,color:#E7EFEC;
-  classDef ends fill:#0b1220,stroke:#4A5D5A,color:#7C918C;
+  classDef act fill:#F6F4EF,stroke:#1D5BC2,color:#14211F;
+  classDef gate fill:#FDF1E0,stroke:#8A4B00,color:#14211F;
+  classDef ends fill:#FFFFFF,stroke:#4F5F5C,color:#3B4A48;
   class IN,PAR,CRB,DIR,PRO,PRC,GO,WATCH,ENG,OPT,WRAP,LRN act;
   class SGN gate;
   class T,DONE ends;
@@ -187,19 +216,32 @@ flowchart LR
   </div>
 <script type="module">
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  // Mermaid needs real colours, so the diagram takes the palette of the theme
+  // the page opened in (theme.css: light unless the reader chose dark).
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  const c = dark
+    ? { panel: "#16232A", accent: "#8AB8FF", text: "#E9F0EE", line: "#A7B6B2", label: "#10191C", cluster: "#1C2B32", border: "#2A3B40" }
+    : { panel: "#F6F4EF", accent: "#1D5BC2", text: "#14211F", line: "#4F5F5C", label: "#FFFFFF", cluster: "#EEEBE3", border: "#DCD8CF" };
+  document.querySelectorAll(".mpan").forEach((e) => e.style.setProperty("--ml-text", dark ? "#C3D0CD" : "#3B4A48"));
+  // the diagram's classDef lines are written in the light palette
+  const DARK = { "#F6F4EF": "#16232A", "#1D5BC2": "#8AB8FF", "#14211F": "#E9F0EE", "#FDF1E0": "#2A2418",
+    "#8A4B00": "#F2A93B", "#FFFFFF": "#10191C", "#4F5F5C": "#A7B6B2", "#3B4A48": "#C3D0CD" };
+  if (dark) document.querySelectorAll("pre.mermaid").forEach((pre) => {
+    pre.innerHTML = pre.innerHTML.replace(/#[0-9A-F]{6}\b/g, (m) => DARK[m] || m);
+  });
   mermaid.initialize({
     startOnLoad: true,
     theme: "base",
     flowchart: { useMaxWidth: false, curve: "basis", nodeSpacing: 34, rankSpacing: 46 },
     themeVariables: {
-      background: "#0F1D22",
-      primaryColor: "#0F1D22",
-      primaryBorderColor: "#6BA8FF",
-      primaryTextColor: "#E7EFEC",
-      lineColor: "#4A5D5A",
-      edgeLabelBackground: "#0A1417",
-      clusterBkg: "rgba(0,0,0,0.18)",
-      clusterBorder: "#1C2E33",
+      background: c.panel,
+      primaryColor: c.panel,
+      primaryBorderColor: c.accent,
+      primaryTextColor: c.text,
+      lineColor: c.line,
+      edgeLabelBackground: c.label,
+      clusterBkg: c.cluster,
+      clusterBorder: c.border,
       fontFamily: "'IBM Plex Mono', ui-monospace, monospace",
       fontSize: "13px"
     }
